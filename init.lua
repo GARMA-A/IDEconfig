@@ -97,6 +97,12 @@ require("lazy").setup({
 			},
 		},
 	},
+	{
+		"windwp/nvim-autopairs",
+		config = function()
+			require("nvim-autopairs").setup({})
+		end,
+	},
 	"github/copilot.vim",
 	----
 	{ -- Useful plugin to show you pending keybinds.
