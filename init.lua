@@ -65,6 +65,22 @@ vim.keymap.set("n", "<A-s>", ":Lexplore<CR>", { noremap = true, silent = true })
 vim.keymap.set("i", "<C-x>", "<Plug>(copilot-dismiss)", { silent = true })
 vim.keymap.set("n", "ZZ", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set("n", "Z", "$", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
+
+-- this part is about swap the marks
+function SwapJump()
+	local char = vim.fn.getcharstr()
+	if char:match("%l") then -- If lowercase, jump to the global mark
+		vim.cmd("normal! '" .. char:upper())
+	elseif char:match("%u") then -- If uppercase, jump to the local mark
+		vim.cmd("normal! '" .. char:lower())
+	else
+		print("Invalid jump: Use only letters!")
+	end
+end
+
+vim.keymap.set("n", "'", ":lua SwapJump()<CR>", { noremap = true })
+--- now i can use the small letters to set the global mark and the capital letters to set the local mark
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -109,6 +125,14 @@ require("lazy").setup({
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup({})
+		end,
+	},
+	{
+		"iamcco/markdown-preview.nvim",
+		build = "cd app && npm install",
+		ft = { "markdown" },
+		config = function()
+			vim.g.mkdp_auto_start = 1
 		end,
 	},
 	"github/copilot.vim",
