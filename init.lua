@@ -64,7 +64,7 @@ vim.keymap.set("n", "<A-s>", ":Lexplore<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("i", "<C-x>", "<Plug>(copilot-dismiss)", { silent = true })
 vim.keymap.set("n", "ZZ", "<Nop>", { noremap = true, silent = true })
-vim.keymap.set("n", "Z", "$", { noremap = true, silent = true })
+vim.keymap.set({ "n", "o" }, "Z", "$", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
 
 -- this part is about swap the marks
