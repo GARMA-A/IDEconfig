@@ -122,6 +122,10 @@ require("lazy").setup({
 		},
 	},
 	{
+		"mg979/vim-visual-multi",
+		branch = "master",
+	},
+	{
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup({})
