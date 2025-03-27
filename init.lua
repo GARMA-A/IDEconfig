@@ -132,6 +132,10 @@ require("lazy").setup({
 		end,
 	},
 	{
+		"mbbill/undotree",
+		keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Toggle Undo Tree" } },
+	},
+	{
 		"iamcco/markdown-preview.nvim",
 		build = "cd app && npm install",
 		ft = { "markdown" },
