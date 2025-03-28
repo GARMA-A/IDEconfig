@@ -43,7 +43,6 @@ vim.keymap.set("n", "Q", "I", opts) -- Make "Q" behave like "I"
 vim.keymap.set("n", "q", "i", opts) -- Make "Q" behave like "I"
 vim.keymap.set("n", "+", "=", opts) -- Use + for indentation
 vim.keymap.set("n", "=", "+", opts) -- Use = for moving down
-
 vim.keymap.set("v", "+", "=", opts) -- Use + for indentation
 vim.keymap.set("v", "=", "+", opts) -- Use = for moving down
 vim.keymap.set("n", "w", "b", opts)
@@ -133,6 +132,14 @@ require("lazy").setup({
 					["<M-h>"] = "actions.select_split",
 					["<A-s>"] = function()
 						vim.cmd("bd")
+					end,
+					["-"] = "actions.parent", -- Move up (go to parent directory)
+					["-"] = function()
+						vim.cmd("normal! k")
+					end,
+					-- Map '=' to move down (simulate pressing 'j')
+					["="] = function()
+						vim.cmd("normal! j")
 					end,
 				},
 				win_options = {
