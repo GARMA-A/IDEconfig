@@ -65,6 +65,9 @@ vim.keymap.set("n", "ZZ", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n", "o" }, "Z", "$", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
 
+vim.keymap.set("n", "<A-j>", ":lnext<CR>", { silent = true, desc = "Location List Next" })
+vim.keymap.set("n", "<A-k>", ":lprev<CR>", { silent = true, desc = "Location List Previous" })
+
 -- this part is about swap the marks
 function SwapJump()
 	local char = vim.fn.getcharstr()
