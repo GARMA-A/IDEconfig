@@ -60,7 +60,6 @@ vim.keymap.set("n", "<A-left>", "<C-w><C-h>", { desc = "Move focus to the left w
 vim.keymap.set("n", "<A-right>", "<C-w><C-l>", { desc = "Move focus to the right window" })
 vim.keymap.set("n", "<A-down>", "<C-w><C-j>", { desc = "Move focus to the lower window" })
 vim.keymap.set("n", "<A-up>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
-vim.keymap.set("n", "<A-s>", ":Lexplore<CR>", { noremap = true, silent = true })
 
 vim.keymap.set("i", "<C-x>", "<Plug>(copilot-dismiss)", { silent = true })
 vim.keymap.set("n", "ZZ", "<Nop>", { noremap = true, silent = true })
@@ -81,14 +80,6 @@ end
 
 vim.keymap.set("n", "'", ":lua SwapJump()<CR>", { noremap = true })
 --- now i can use the small letters to set the global mark and the capital letters to set the local mark
-
-vim.api.nvim_create_autocmd("TextYankPost", {
-	desc = "Highlight when yanking (copying) text",
-	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
-	callback = function()
-		vim.highlight.on_yank()
-	end,
-})
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
@@ -120,6 +111,43 @@ require("lazy").setup({
 				changedelete = { text = "~" },
 			},
 		},
+	},
+	{
+		"stevearc/oil.nvim",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
+		config = function()
+			-- Define the custom Oil bar function
+			CustomOilBar = function()
+				local path = vim.fn.expand("%")
+				path = path:gsub("oil://", "")
+				return "  " .. vim.fn.fnamemodify(path, ":%")
+			end
+
+			-- Setup Oil with custom options
+			require("oil").setup({
+				keymaps = {
+					["<C-h>"] = false,
+					["<C-l>"] = false,
+					["<C-k>"] = false,
+					["<C-j>"] = false,
+					["<M-h>"] = "actions.select_split",
+					["<A-s>"] = function()
+						vim.cmd("bd")
+					end,
+				},
+				win_options = {
+					wrap = false,
+					signcolumn = "no",
+					winbar = "%{v:lua.CustomOilBar()}",
+				},
+				view_options = {
+					show_hidden = true,
+				},
+			})
+
+			-- Keymap to toggle Oil with '_'
+			vim.keymap.set("n", "<A-s>", "<CMD>Oil<CR>", { desc = "Toggle Oil" })
+		end,
 	},
 	{
 		"mg979/vim-visual-multi",
@@ -195,9 +223,6 @@ require("lazy").setup({
 			},
 		},
 	},
-
-	-- NOTE: Plugins can specify dependencies.
-	--
 
 	{ -- Fuzzy Finder (files, lsp, etc)
 		"nvim-telescope/telescope.nvim",
