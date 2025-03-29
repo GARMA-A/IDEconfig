@@ -82,6 +82,34 @@ local term_win_id = nil
 
 local term_buf_id = nil
 
+---------------------------------------------------------------------
+---harpoon keymaps---------------------------------------------------
+
+vim.keymap.set("n", "<leader>ha", function()
+	require("harpoon.mark").add_file()
+end, { desc = "Harpoon Add File" })
+
+vim.keymap.set("n", "<leader>hm", function()
+	require("harpoon.ui").toggle_quick_menu()
+end, { desc = "Harpoon Menu" })
+
+--------free this keys for harpoon
+vim.keymap.set("n", "<leader>>", ">>", { desc = "Indent Right" })
+vim.keymap.set("v", "<leader>>", ">gv", { desc = "Indent Right (Visual)" })
+
+-- Map leader + < for indent left
+vim.keymap.set("n", "<leader><", "<<", { desc = "Indent Left" })
+vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
+--------
+
+vim.keymap.set("n", ">", function()
+	require("harpoon.ui").nav_next()
+end, { desc = "Harpoon Next" })
+vim.keymap.set("n", "<", function()
+	require("harpoon.ui").nav_prev()
+end, { desc = "Harpoon Previous" })
+------------------------------------------------------------------------
+------------------------------------------------------------------------
 function ToggleBottomTerminal()
 	if term_win_id and vim.api.nvim_win_is_valid(term_win_id) then
 		-- Hide the terminal if it's open
@@ -101,7 +129,6 @@ function ToggleBottomTerminal()
 			vim.cmd("term") -- Open terminal
 			term_buf_id = vim.api.nvim_get_current_buf() -- Store buffer ID
 		end
-
 		-- Enter insert mode and store window ID
 		vim.cmd("startinsert")
 		term_win_id = vim.api.nvim_get_current_win()
@@ -111,19 +138,6 @@ end
 -- Key mapping to toggle the terminal
 vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
 
--- this part is about swap the marks
-function SwapJump()
-	local char = vim.fn.getcharstr()
-	if char:match("%l") then -- If lowercase, jump to the global mark
-		vim.cmd("normal! '" .. char:upper())
-	elseif char:match("%u") then -- If uppercase, jump to the local mark
-		vim.cmd("normal! '" .. char:lower())
-	else
-		print("Invalid jump: Use only letters!")
-	end
-end
-
-vim.keymap.set("n", "'", ":lua SwapJump()<CR>", { noremap = true })
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
 	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
@@ -162,6 +176,14 @@ require("lazy").setup({
 				changedelete = { text = "~" },
 			},
 		},
+	},
+	{
+		"ThePrimeagen/harpoon",
+		config = function()
+			require("harpoon").setup({
+				mark_branch = true,
+			})
+		end,
 	},
 	{
 		"stevearc/oil.nvim",
