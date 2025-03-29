@@ -27,28 +27,36 @@ vim.opt.inccommand = "split"
 vim.opt.cursorline = true
 vim.opt.scrolloff = 10
 vim.opt.confirm = true
-vim.keymap.set("n", "<A-c>", "<cmd>nohlsearch<CR>")
 
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostic [Q]uickfix list" })
 local map = vim.api.nvim_set_keymap
 
 local opts = { noremap = true, silent = true }
 
+-- Escape using Alt + c in Insert and Visual modes
+--
+vim.keymap.set("n", "<A-c>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("i", "<A-c>", "<Esc>", opts)
 vim.keymap.set("v", "<A-c>", "<Esc>", opts)
+vim.keymap.set("t", "<A-c>", "<C-\\><C-n>", opts) -- Exit terminal mode
 
+-- Recording macros and behavior changes
 vim.keymap.set("n", "m", "q", opts) -- Start recording macro with "m"
 vim.keymap.set("n", "M", "q", opts)
 vim.keymap.set("n", "Q", "I", opts) -- Make "Q" behave like "I"
-vim.keymap.set("n", "q", "i", opts) -- Make "Q" behave like "I"
+vim.keymap.set("n", "q", "i", opts) -- Make "q" behave like "i"
+
+-- Indentation and moving down
 vim.keymap.set("n", "+", "=", opts) -- Use + for indentation
 vim.keymap.set("n", "=", "+", opts) -- Use = for moving down
 vim.keymap.set("v", "+", "=", opts) -- Use + for indentation
 vim.keymap.set("v", "=", "+", opts) -- Use = for moving down
-vim.keymap.set("n", "w", "b", opts)
+
+-- Word navigation
+vim.keymap.set("n", "w", "b", opts) -- Move back with "w"
 vim.keymap.set("v", "w", "b", opts)
 
-vim.keymap.set("n", "e", "w", opts)
+vim.keymap.set("n", "e", "w", opts) -- Move forward with "e"
 vim.keymap.set("v", "e", "w", opts)
 
 vim.keymap.set({ "n", "v" }, "<C-x>", "%", { noremap = true, silent = true })
@@ -68,6 +76,7 @@ vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
 vim.keymap.set("n", "<A-j>", ":lnext<CR>", { silent = true, desc = "Location List Next" })
 vim.keymap.set("n", "<A-k>", ":lprev<CR>", { silent = true, desc = "Location List Previous" })
 
+vim.api.nvim_set_keymap("n", "<leader>t", ":term<CR>", { noremap = true, silent = true })
 -- this part is about swap the marks
 function SwapJump()
 	local char = vim.fn.getcharstr()
@@ -81,7 +90,13 @@ function SwapJump()
 end
 
 vim.keymap.set("n", "'", ":lua SwapJump()<CR>", { noremap = true })
---- now i can use the small letters to set the global mark and the capital letters to set the local mark
+vim.api.nvim_create_autocmd("TextYankPost", {
+	desc = "Highlight when yanking (copying) text",
+	group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+	callback = function()
+		vim.highlight.on_yank()
+	end,
+})
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
