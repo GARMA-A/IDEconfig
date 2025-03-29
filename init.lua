@@ -76,7 +76,41 @@ vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
 vim.keymap.set("n", "<A-j>", ":lnext<CR>", { silent = true, desc = "Location List Next" })
 vim.keymap.set("n", "<A-k>", ":lprev<CR>", { silent = true, desc = "Location List Previous" })
 
-vim.api.nvim_set_keymap("n", "<leader>t", ":term<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<A-=>", ":bd!<CR>", { noremap = true, silent = true })
+-- Global variables to store terminal window and buffer IDs
+local term_win_id = nil
+
+local term_buf_id = nil
+
+function ToggleBottomTerminal()
+	if term_win_id and vim.api.nvim_win_is_valid(term_win_id) then
+		-- Hide the terminal if it's open
+		vim.api.nvim_win_hide(term_win_id)
+		term_win_id = nil
+	else
+		-- Check if the terminal buffer already exists
+		if term_buf_id and vim.api.nvim_buf_is_valid(term_buf_id) then
+			-- Reopen the existing terminal buffer in a new split
+			vim.cmd("botright new")
+			vim.api.nvim_win_set_height(0, 10)
+			vim.api.nvim_win_set_buf(0, term_buf_id)
+		else
+			-- Create a new terminal
+			vim.cmd("botright new") -- Open at bottom
+			vim.api.nvim_win_set_height(0, 10) -- Set height
+			vim.cmd("term") -- Open terminal
+			term_buf_id = vim.api.nvim_get_current_buf() -- Store buffer ID
+		end
+
+		-- Enter insert mode and store window ID
+		vim.cmd("startinsert")
+		term_win_id = vim.api.nvim_get_current_win()
+	end
+end
+
+-- Key mapping to toggle the terminal
+vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
+
 -- this part is about swap the marks
 function SwapJump()
 	local char = vim.fn.getcharstr()
