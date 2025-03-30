@@ -108,6 +108,23 @@ end, { desc = "Harpoon Next" })
 vim.keymap.set("n", "<", function()
 	require("harpoon.ui").nav_prev()
 end, { desc = "Harpoon Previous" })
+
+vim.keymap.set("n", "<leader>]", function()
+	require("harpoon.ui").nav_file(1)
+end, { desc = "Go to Harpoon window 1" })
+
+vim.keymap.set("n", "<leader>[", function()
+	require("harpoon.ui").nav_file(2)
+end, { desc = "Go to Harpoon window 2" })
+
+vim.keymap.set("n", "<leader>p", function()
+	require("harpoon.ui").nav_file(3)
+end, { desc = "Go to Harpoon window 3" })
+
+vim.keymap.set("n", "<leader>o", function()
+	require("harpoon.ui").nav_file(4)
+end, { desc = "Go to Harpoon window 4" })
+
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
 function ToggleBottomTerminal()
