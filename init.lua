@@ -97,9 +97,15 @@ end, { desc = "Harpoon Menu" })
 vim.keymap.set("n", "<leader>>", ">>", { desc = "Indent Right" })
 vim.keymap.set("v", "<leader>>", ">gv", { desc = "Indent Right (Visual)" })
 
+vim.keymap.set("n", "<leader>]", "<C-]>", { desc = "Indent Left" })
+vim.keymap.set("n", "<leader>[", "<C-[>", { desc = "Indent Left (Visual)" })
+vim.keymap.set("n", "<leader>p", "<C-p>", { desc = "Indent Left (Visual)" })
+vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "Indent Left (Visual)" })
+
 -- Map leader + < for indent left
 vim.keymap.set("n", "<leader><", "<<", { desc = "Indent Left" })
 vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
+
 --------
 
 vim.keymap.set("n", ">", function()
@@ -109,19 +115,19 @@ vim.keymap.set("n", "<", function()
 	require("harpoon.ui").nav_prev()
 end, { desc = "Harpoon Previous" })
 
-vim.keymap.set("n", "<leader>]", function()
+vim.keymap.set("n", "<C-]>", function()
 	require("harpoon.ui").nav_file(1)
 end, { desc = "Go to Harpoon window 1" })
 
-vim.keymap.set("n", "<leader>[", function()
+vim.keymap.set("n", "<C-[>", function()
 	require("harpoon.ui").nav_file(2)
 end, { desc = "Go to Harpoon window 2" })
 
-vim.keymap.set("n", "<leader>p", function()
+vim.keymap.set("n", "<C-p>", function()
 	require("harpoon.ui").nav_file(3)
 end, { desc = "Go to Harpoon window 3" })
 
-vim.keymap.set("n", "<leader>o", function()
+vim.keymap.set("n", "<C-o>", function()
 	require("harpoon.ui").nav_file(4)
 end, { desc = "Go to Harpoon window 4" })
 
