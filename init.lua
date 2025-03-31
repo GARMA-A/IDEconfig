@@ -133,6 +133,7 @@ end, { desc = "Go to Harpoon window 4" })
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+
 function ToggleBottomTerminal()
 	if term_win_id and vim.api.nvim_win_is_valid(term_win_id) then
 		-- Hide the terminal if it's open
@@ -160,6 +161,26 @@ end
 
 -- Key mapping to toggle the terminal
 vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
+vim.api.nvim_create_autocmd("LspAttach", {
+	callback = function(args)
+		local client = vim.lsp.get_client_by_id(args.data.client_id)
+		if client.name == "tsserver" then
+			-- Next.js specific navigation
+			vim.keymap.set("n", "gd", function()
+				require("telescope.builtin").lsp_definitions({ jump_type = "never" })
+			end, { buffer = args.buf, desc = "Goto Definition (TS)" })
+
+			-- Component navigation
+			vim.keymap.set(
+				"n",
+				"<leader>cc",
+				"<cmd>Telescope find_files cwd=./components<CR>",
+				{ desc = "Find Components" }
+			)
+			vim.keymap.set("n", "<leader>cp", "<cmd>Telescope find_files cwd=./pages<CR>", { desc = "Find Pages" })
+		end
+	end,
+})
 
 vim.api.nvim_create_autocmd("TextYankPost", {
 	desc = "Highlight when yanking (copying) text",
@@ -188,6 +209,48 @@ require("lazy").setup({
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
 	-- keys can be used to configure plugin behavior/loading/etc.
+	{
+		"elentok/format-on-save.nvim", -- Auto-format with Prettier
+		config = function()
+			require("format-on-save").setup({
+				formatters = {
+					{
+						filename_pattern = { "*.tsx", "*.jsx", "*.ts", "*.js" },
+						command = "eslint --fix",
+					},
+				},
+			})
+		end,
+	},
+	{
+		"mattn/emmet-vim",
+		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact" },
+		init = function()
+			-- Optional: Customize for Next.js JSX/TSX (e.g., className instead of class)
+			vim.g.user_emmet_settings = {
+				typescriptreact = {
+					extends = "jsx",
+					attributes = {
+						["className"] = "class", -- Expand class to className
+					},
+				},
+				javascriptreact = {
+					extends = "jsx",
+					attributes = {
+						["className"] = "class",
+					},
+				},
+			}
+		end,
+	},
+	{
+		"brianhuster/live-preview.nvim",
+		config = function()
+			require("live-preview").setup({
+				-- You can add custom options here if needed.
+			})
+		end,
+	},
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -540,27 +603,53 @@ require("lazy").setup({
 			local servers = {
 				tsserver = {
 					settings = {
-						javascript = {
-							format = {
-								enable = true,
+						typescript = {
+							preferences = {
+								-- Enable Next.js-style path aliases (requires tsconfig.json "baseUrl" and "paths")
+								importModuleSpecifierPreference = "project=relative",
+							},
+							-- Enable React Server Components typing (Next.js 13+)
+							experimental = {
+								enableProjectDiagnostics = true,
 							},
 						},
-						typescript = {
-							format = {
-								enable = true,
+						javascript = {
+							preferences = {
+								importModuleSpecifierPreference = "project=relative",
 							},
 						},
 					},
+					-- Enable JSX/TSX support
+					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
 				},
 
-				lua_ls = {
-					-- cmd = { ... },
-					-- filetypes = { ... },
-					-- capabilities = {},
+				tailwindcss = {
+					filetypes = {
+						"html",
+						"css",
+						"scss",
+						"javascript",
+						"javascriptreact",
+						"typescript",
+						"typescriptreact",
+						"svelte",
+						"vue",
+					},
+					init_options = {
+						userLanguages = {
+							typescriptreact = "typescript",
+							javascriptreact = "javascript",
+						},
+					},
 					settings = {
-						Lua = {
-							completion = {
-								callSnippet = "Replace",
+						tailwindCSS = {
+							experimental = {
+								classRegex = {
+									"tw`([^`]*)",
+									"className=\\s*[\"']([^\"']*)",
+									"class:\\s*[\"']([^\"']*)",
+									"([\\w-]+)=\\s*[\"']([^\"']*)", -- For styled-components-like syntax
+								},
 							},
 						},
 					},
@@ -673,7 +762,7 @@ require("lazy").setup({
 
 					["<CR>"] = cmp.mapping.confirm({ select = true }),
 
-					["<C-Space>"] = cmp.mapping.complete({}),
+					["<C-leader>"] = cmp.mapping.complete({}),
 
 					["<C-l>"] = cmp.mapping(function()
 						if luasnip.expand_or_locally_jumpable() then
@@ -691,10 +780,12 @@ require("lazy").setup({
 						name = "lazydev",
 						group_index = 0,
 					},
+					{ name = "buffer" },
 					{ name = "nvim_lsp" },
 					{ name = "luasnip" },
 					{ name = "path" },
 					{ name = "nvim_lsp_signature_help" },
+					{ name = "emoji" },
 				},
 			})
 		end,
