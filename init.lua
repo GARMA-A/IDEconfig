@@ -2,6 +2,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
+
+vim.g.python3_host_prog = "~/.neovim-venv/bin/python3"
 -- NOTE: You can change these options as you wish!
 --  For more options, you can see `:help option-list`
 vim.opt.number = true
@@ -189,7 +191,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.highlight.on_yank()
 	end,
 })
-
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -222,6 +223,7 @@ require("lazy").setup({
 			})
 		end,
 	},
+
 	{
 		"mattn/emmet-vim",
 		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact" },
@@ -714,6 +716,9 @@ require("lazy").setup({
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
+				c = { "clang-format" }, -- Added clang-format for C files
+				cpp = { "clang-format" }, -- Added clang-format for C++ files
+				python = { "black" }, -- Added black for Python files
 			},
 		},
 	},
