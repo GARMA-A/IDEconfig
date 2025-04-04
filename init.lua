@@ -163,6 +163,40 @@ end
 
 -- Key mapping to toggle the terminal
 vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
+
+-- Define global variables to track terminal window and buffer
+local full_screen_term_win_id = nil
+local full_screen_term_buf_id = nil
+
+function ToggleFullScreenTerminal()
+	if full_screen_term_win_id and vim.api.nvim_win_is_valid(full_screen_term_win_id) then
+		-- Hide the terminal if it's open
+		vim.api.nvim_win_hide(full_screen_term_win_id)
+		full_screen_term_win_id = nil
+	else
+		-- Check if the terminal buffer already exists
+		if full_screen_term_buf_id and vim.api.nvim_buf_is_valid(full_screen_term_buf_id) then
+			-- Reopen the existing terminal buffer in a new full-screen window
+			vim.cmd("new") -- Open a new split
+			vim.api.nvim_win_set_buf(0, full_screen_term_buf_id)
+		else
+			-- Create a new full-screen terminal
+			vim.cmd("new") -- Open a new split
+			vim.cmd("term") -- Open terminal
+			full_screen_term_buf_id = vim.api.nvim_get_current_buf() -- Store buffer ID
+		end
+		-- Set the terminal to full screen
+		vim.api.nvim_win_set_width(0, vim.o.columns) -- Set width to full screen
+		vim.api.nvim_win_set_height(0, vim.o.lines) -- Set height to full screen
+		-- Enter insert mode and store window ID
+		vim.cmd("startinsert")
+		full_screen_term_win_id = vim.api.nvim_get_current_win()
+	end
+end
+
+-- Key mapping to toggle the full-screen terminal
+vim.api.nvim_set_keymap("n", "<Leader>-", [[:lua ToggleFullScreenTerminal()<CR>]], { noremap = true, silent = true })
+
 vim.api.nvim_create_autocmd("LspAttach", {
 	callback = function(args)
 		local client = vim.lsp.get_client_by_id(args.data.client_id)
@@ -811,9 +845,8 @@ require("lazy").setup({
 				terminal_colors = true, -- Ensure the terminal has matching colors
 			})
 			vim.cmd.colorscheme("tokyonight-night")
-			vim.api.nvim_set_hl(0, "Normal", { bg = "#010000", blend = 20 })
-			vim.api.nvim_set_hl(0, "NormalNC", { bg = "#010000", blend = 20 }) -- Inactive windows
-			vim.api.nvim_set_hl(0, "EndOfBuffer", { bg = "#010000", blend = 20 }) -- Empty space at the end
+			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
+			vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
 		end,
 	},
 
