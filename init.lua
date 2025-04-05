@@ -10,6 +10,7 @@ vim.opt.number = true
 vim.opt.relativenumber = true
 vim.opt.mouse = "a"
 vim.opt.showmode = false
+vim.opt.guicursor = "n-v-c:block,i:block"
 vim.schedule(function()
 	vim.opt.clipboard = "unnamedplus"
 end)
@@ -23,6 +24,7 @@ vim.opt.timeoutlen = 300
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
+
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
 vim.opt.inccommand = "split"
@@ -79,6 +81,7 @@ vim.keymap.set("n", "<A-j>", ":lnext<CR>", { silent = true, desc = "Location Lis
 vim.keymap.set("n", "<A-k>", ":lprev<CR>", { silent = true, desc = "Location List Previous" })
 
 vim.api.nvim_set_keymap("n", "<A-=>", ":bd!<CR>", { noremap = true, silent = true })
+
 -- Global variables to store terminal window and buffer IDs
 local term_win_id = nil
 
@@ -235,6 +238,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end ---@diagnostic disable-next-line: undefined-field
 vim.opt.rtp:prepend(lazypath)
 
+vim.cmd([[highlight! clear CursorLine]])
 --
 -- NOTE: Here is where you install your plugins.
 require("lazy").setup({
@@ -847,6 +851,7 @@ require("lazy").setup({
 			vim.cmd.colorscheme("tokyonight-night")
 			vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 			vim.api.nvim_set_hl(0, "NormalNC", { bg = "none" })
+			vim.api.nvim_set_hl(0, "CursorLine", { ctermbg = "NONE", background = "NONE" })
 		end,
 	},
 
