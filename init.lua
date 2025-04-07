@@ -158,6 +158,9 @@ function ToggleBottomTerminal()
 			vim.cmd("term") -- Open terminal
 			term_buf_id = vim.api.nvim_get_current_buf() -- Store buffer ID
 		end
+		-- Ensure no background for the small terminal
+		vim.api.nvim_win_set_option(0, "winhighlight", "Normal:Normal,NormalNC:Normal")
+
 		-- Enter insert mode and store window ID
 		vim.cmd("startinsert")
 		term_win_id = vim.api.nvim_get_current_win()
