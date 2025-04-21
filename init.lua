@@ -242,6 +242,13 @@ require("lazy").setup({
 			})
 		end,
 	},
+	{
+		"windwp/nvim-ts-autotag",
+		ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact" },
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	},
 
 	{
 		"mattn/emmet-vim",
@@ -625,6 +632,9 @@ require("lazy").setup({
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 			local servers = {
+				html = {},
+				css = {},
+
 				tsserver = {
 					settings = {
 						typescript = {
@@ -690,6 +700,9 @@ require("lazy").setup({
 					"typescript-language-server", -- ✅ Correct package name
 					"eslint",
 					"stylua",
+					"html-lsp", -- ✅ HTML support
+					"css-lsp", -- ✅ CSS support
+					"prettier",
 				},
 			})
 
