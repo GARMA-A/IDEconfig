@@ -295,9 +295,9 @@ require("lazy").setup({
 		"ThePrimeagen/harpoon",
 		config = function()
 			require("harpoon").setup({
-				mark_branch = true,
 				global_settings = {
 					enter_on_sendcmd = true,
+					mark_branch = true,
 				},
 			})
 		end,
