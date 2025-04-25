@@ -37,8 +37,6 @@ local map = vim.api.nvim_set_keymap
 
 local opts = { noremap = true, silent = true }
 
--- Escape using Alt + c in Insert and Visual modes
---
 vim.keymap.set("n", "<A-c>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("i", "<A-c>", "<Esc>", opts)
 vim.keymap.set("v", "<A-c>", "<Esc>", opts)
@@ -62,6 +60,10 @@ vim.keymap.set("v", "w", "b", opts)
 
 vim.keymap.set("n", "e", "w", opts) -- Move forward with "e"
 vim.keymap.set("v", "e", "w", opts)
+
+vim.keymap.set("n", "}", "<C-d>", opts)
+
+vim.keymap.set("n", "{", "<C-u>", opts)
 
 vim.keymap.set({ "n", "v" }, "<C-x>", "%", { noremap = true, silent = true })
 
@@ -149,7 +151,26 @@ end, { desc = "Go to Harpoon window 4" })
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
+--copilot remaps
+----------------------------------
+----------------------------------
+----------------------------------
+-- Key: Visual mode fix
+vim.keymap.set("v", "<leader>cf", function()
+	require("CopilotChat").ask("Fix this code", { selection = require("CopilotChat.select").visual })
+end, { desc = "Copilot Fix" })
 
+-- Key: Visual mode explain
+vim.keymap.set("v", "<leader>ce", function()
+	require("CopilotChat").ask("Explain this code", { selection = require("CopilotChat.select").visual })
+end, { desc = "Copilot Explain" })
+
+-- Key: Normal mode - open chat and insert result into current buffer
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
+----------------------------------
 function ToggleBottomTerminal()
 	if term_win_id and vim.api.nvim_win_is_valid(term_win_id) then
 		-- Hide the terminal if it's open
@@ -242,11 +263,38 @@ require("lazy").setup({
 			})
 		end,
 	},
+
+	{
+		"CopilotC-Nvim/CopilotChat.nvim",
+		branch = "main", -- 🔄 changed from 'canary' to 'main'
+		dependencies = {
+			{ "nvim-lua/plenary.nvim" },
+		},
+		config = function()
+			require("CopilotChat").setup({})
+		end,
+	},
 	{
 		"windwp/nvim-ts-autotag",
 		ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact" },
 		config = function()
 			require("nvim-ts-autotag").setup()
+		end,
+	},
+	{
+		"saecki/crates.nvim",
+		ft = { "toml" },
+		config = function()
+			require("crates").setup({
+				completion = {
+					cmp = {
+						enabled = true,
+					},
+				},
+			})
+			require("cmp").setup.buffer({
+				sources = { { name = "crates" } },
+			})
 		end,
 	},
 
