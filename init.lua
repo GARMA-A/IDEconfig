@@ -319,14 +319,6 @@ require("lazy").setup({
 			}
 		end,
 	},
-	{
-		"brianhuster/live-preview.nvim",
-		config = function()
-			require("live-preview").setup({
-				-- You can add custom options here if needed.
-			})
-		end,
-	},
 	{ -- Adds git related signs to the gutter, as well as utilities for managing changes
 		"lewis6991/gitsigns.nvim",
 		opts = {
@@ -410,14 +402,14 @@ require("lazy").setup({
 		keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Toggle Undo Tree" } },
 	},
 	{
-		"iamcco/markdown-preview.nvim",
-		build = "cd app && npm install",
-		ft = { "markdown" },
+		"github/copilot.vim",
+		dependencies = {},
+		event = "VimEnter",
 		config = function()
-			vim.g.mkdp_auto_start = 1
+			vim.g.copilot_no_tab_map = false
+			vim.g.copilot_workspace_folders = { vim.fn.getcwd() }
 		end,
 	},
-	"github/copilot.vim",
 	----
 	{ -- Useful plugin to show you pending keybinds.
 		"folke/which-key.nvim",
