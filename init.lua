@@ -230,6 +230,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 		vim.highlight.on_yank()
 	end,
 })
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.go",
+	callback = function()
+		vim.cmd("GoFmt")
+	end,
+})
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -250,6 +256,30 @@ require("lazy").setup({
 	-- NOTE: Plugins can also be added by using a table,
 	-- with the first argument being the link and the following
 	-- keys can be used to configure plugin behavior/loading/etc.
+	{
+		"ray-x/go.nvim",
+		dependencies = { -- Optional dependencies
+			"ray-x/guihua.lua",
+			"neovim/nvim-lspconfig",
+			"nvim-treesitter/nvim-treesitter",
+			"mfussenegger/nvim-dap",
+		},
+		config = function()
+			require("go").setup({
+				gofmt = "gofumpt", -- Use 'gofumpt' for formatting
+				max_line_len = 120,
+				tag_transform = false,
+				test_dir = "",
+				comment_placeholder = "   ",
+				lsp_cfg = true,
+				lsp_on_attach = true,
+				dap_debug = true,
+			})
+		end,
+		event = { "CmdlineEnter" },
+		ft = { "go", "gomod" },
+		build = ':lua require("go.install").update_all_sync()', -- Install/update all binaries
+	},
 	{
 		"elentok/format-on-save.nvim", -- Auto-format with Prettier
 		config = function()
@@ -743,6 +773,8 @@ require("lazy").setup({
 					"html-lsp", -- ✅ HTML support
 					"css-lsp", -- ✅ CSS support
 					"prettier",
+					"gopls",
+					"gofumpt",
 				},
 			})
 
