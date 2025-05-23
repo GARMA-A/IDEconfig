@@ -165,7 +165,14 @@ vim.keymap.set("v", "<leader>ce", function()
 	require("CopilotChat").ask("Explain this code", { selection = require("CopilotChat.select").visual })
 end, { desc = "Copilot Explain" })
 
--- Key: Normal mode - open chat and insert result into current buffer
+vim.keymap.set("n", "<leader>co", function()
+	-- Run the CopilotChat command
+	vim.cmd("CopilotChat")
+	-- Simulate pressing `i` after a short delay
+	vim.defer_fn(function()
+		vim.api.nvim_feedkeys("i", "n", false)
+	end, 10) -- 10ms delay to ensure the window is ready
+end, { noremap = true, silent = true, desc = "Open Copilot Chat and enter insert mode" })
 ----------------------------------
 ----------------------------------
 ----------------------------------
@@ -704,6 +711,14 @@ require("lazy").setup({
 			local servers = {
 				html = {},
 				css = {},
+				gopls = {
+					settings = {
+						gopls = {
+							usePlaceholders = true,
+							completeUnimported = true,
+						},
+					},
+				},
 
 				tsserver = {
 					settings = {
@@ -854,6 +869,34 @@ require("lazy").setup({
 			local cmp = require("cmp")
 			local luasnip = require("luasnip")
 			luasnip.config.setup({})
+			local ls = luasnip
+			local s = ls.snippet
+			local t = ls.text_node
+			local i = ls.insert_node
+
+			-- Add the snippet for multiple filetypes (optional)
+			for _, ft in ipairs({ "javascript", "javascriptreact", "typescript", "typescriptreact" }) do
+				ls.add_snippets(ft, {
+					s("cl", {
+						t("console.log("),
+						i(1),
+						t(")"),
+					}),
+				})
+			end
+			ls.add_snippets("go", {
+				s("fp", {
+					t("fmt.Println("),
+					i(1),
+					t(")"),
+				}),
+				s("enil", {
+					t("if err != nil {"),
+					t({ "", "\t" }),
+					i(1),
+					t({ "", "}" }),
+				}),
+			})
 
 			cmp.setup({
 				snippet = {
