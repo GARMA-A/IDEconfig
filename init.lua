@@ -285,18 +285,30 @@ require("lazy").setup({
 		end,
 		event = { "CmdlineEnter" },
 		ft = { "go", "gomod" },
-		build = ':lua require("go.install").update_all_sync()', -- Install/update all binaries
+		build = ':lua require("go.install").update_all_sync()',
 	},
 	{
-		"elentok/format-on-save.nvim", -- Auto-format with Prettier
+		"iamcco/markdown-preview.nvim",
+		build = "cd app && npm install",
+		ft = { "markdown" },
+		config = function()
+			vim.g.mkdp_auto_start = 0
+		end,
+	},
+	{
+		"elentok/format-on-save.nvim",
 		config = function()
 			require("format-on-save").setup({
 				formatters = {
 					{
 						filename_pattern = { "*.tsx", "*.jsx", "*.ts", "*.js" },
-						command = "eslint --fix",
+						command = "eslint --fix --quiet",
+						-- For projects with local ESLint installation:
+						command = "./node_modules/.bin/eslint --fix --quiet $FILE_PATH",
 					},
 				},
+				-- Optional: Enable format on save by default
+				format_on_save = true,
 			})
 		end,
 	},
@@ -418,6 +430,7 @@ require("lazy").setup({
 				view_options = {
 					show_hidden = true,
 				},
+				skip_confirm_for_simple_edits = true,
 			})
 
 			-- Keymap to toggle Oil with '_'
@@ -790,17 +803,55 @@ require("lazy").setup({
 					"prettier",
 					"gopls",
 					"gofumpt",
+					"tailwindcss-language-server",
 				},
 			})
 
 			require("mason-lspconfig").setup({
-				ensure_installed = {}, -- explicitly set to an empty table (Kickstart populates installs via mason-tool-installer)
-				automatic_installation = false,
 				handlers = {
 					function(server_name)
-						local server = servers[server_name] or {}
-						server.capabilities = vim.tbl_deep_extend("force", {}, capabilities, server.capabilities or {})
-						require("lspconfig")[server_name].setup(server)
+						local opts = {
+							capabilities = vim.tbl_deep_extend(
+								"force",
+								{},
+								capabilities,
+								(servers[server_name] or {}).capabilities or {}
+							),
+						}
+
+						if server_name == "tailwindcss-language-server" then
+							opts.settings = {
+								tailwindCSS = {
+									experimental = {
+										classRegex = {
+											"tw`([^`]*)",
+											"className=\\s*[\"']([^\"']*)",
+											"class:\\s*[\"']([^\"']*)",
+											"([\\w-]+)=\\s*[\"']([^\"']*)", -- styled-components
+										},
+									},
+								},
+							}
+							opts.filetypes = {
+								"html",
+								"css",
+								"scss",
+								"javascript",
+								"javascriptreact",
+								"typescript",
+								"typescriptreact",
+								"svelte",
+								"vue",
+							}
+							opts.init_options = {
+								userLanguages = {
+									typescriptreact = "typescript",
+									javascriptreact = "javascript",
+								},
+							}
+						end
+
+						require("lspconfig")[server_name].setup(opts)
 					end,
 				},
 			})
