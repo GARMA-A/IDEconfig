@@ -936,16 +936,28 @@ require("lazy").setup({
 				})
 			end
 			ls.add_snippets("go", {
-				s("fp", {
+				s("echo", {
 					t("fmt.Println("),
 					i(1),
 					t(")"),
 				}),
-				s("enil", {
+				s("enl", {
 					t("if err != nil {"),
 					t({ "", "\t" }),
 					i(1),
 					t({ "", "}" }),
+				}),
+			})
+			ls.add_snippets("html", {
+				s("!", {
+					t({ "<!DOCTYPE html>", '<html lang="en">', "<head>", '  <meta charset="UTF-8">' }),
+					t({ "", '  <meta name="viewport" content="width=device-width, initial-scale=1.0">' }),
+					t({ "", "  <title>" }),
+					i(1, "Document"),
+					t({ "</title>", "</head>" }),
+					t({ "", "<body>", "" }),
+					i(0),
+					t({ "", "</body>", "</html>" }),
 				}),
 			})
 
