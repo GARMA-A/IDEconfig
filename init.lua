@@ -14,6 +14,7 @@ vim.opt.guicursor = "n-v-c:block,i:block"
 vim.schedule(function()
 	vim.opt.clipboard = "unnamedplus"
 end)
+
 vim.opt.breakindent = true
 vim.opt.undofile = true
 vim.opt.ignorecase = true
@@ -77,13 +78,15 @@ vim.keymap.set("n", "<A-up>", "<C-w><C-k>", { desc = "Move focus to the upper wi
 vim.keymap.set("i", "<C-x>", "<Plug>(copilot-dismiss)", { silent = true })
 vim.keymap.set("n", "ZZ", "<Nop>", { noremap = true, silent = true })
 vim.keymap.set({ "n", "o" }, "Z", "$", { noremap = true, silent = true })
+-- local marks
+vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
+--
 vim.keymap.set("v", "<A-j>", ":m '>+1<CR>gv=gv", { desc = "Move selection down" })
 vim.keymap.set("v", "<A-k>", ":m '<-2<CR>gv=gv", { desc = "Move selection up" })
 
 vim.keymap.set("n", "<A-j>", ":lnext<CR>", { silent = true, desc = "Location List Next" })
 vim.keymap.set("n", "<A-k>", ":lprev<CR>", { silent = true, desc = "Location List Previous" })
 
-vim.api.nvim_set_keymap("n", "b", "m", { noremap = true })
 vim.api.nvim_set_keymap("n", "<A-=>", ":bd!<CR>", { noremap = true, silent = true })
 
 -- Global variables to store terminal window and buffer IDs
@@ -180,6 +183,18 @@ end, { noremap = true, silent = true, desc = "Open Copilot Chat and enter insert
 ----------------------------------
 ----------------------------------
 ----------------------------------
+--- split window
+vim.keymap.set("n", "<leader>wo", function()
+	-- Split the window vertically
+	vim.cmd("vsplit")
+
+	-- Optional: focus stays on original (left), move cursor back
+	vim.cmd("wincmd h")
+end, { noremap = true, silent = true, desc = "Vertical split (half screen)" })
+------------------------------------
+------------------------------------
+------------------------------------
+------------------------------------
 function ToggleBottomTerminal()
 	if term_win_id and vim.api.nvim_win_is_valid(term_win_id) then
 		-- Hide the terminal if it's open
