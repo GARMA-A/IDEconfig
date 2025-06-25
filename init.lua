@@ -828,15 +828,10 @@ require("lazy").setup({
 				handlers = {
 					function(server_name)
 						local opts = {
-							capabilities = vim.tbl_deep_extend(
-								"force",
-								{},
-								capabilities,
-								(servers[server_name] or {}).capabilities or {}
-							),
+							capabilities = capabilities,
 						}
 
-						if server_name == "tailwindcss-language-server" then
+						if server_name == "tailwindcss" or server_name == "tailwindcss-language-server" then
 							opts.settings = {
 								tailwindCSS = {
 									experimental = {
@@ -862,8 +857,8 @@ require("lazy").setup({
 							}
 							opts.init_options = {
 								userLanguages = {
-									typescriptreact = "typescript",
-									javascriptreact = "javascript",
+									typescriptreact = "html",
+									javascriptreact = "html",
 								},
 							}
 						end
