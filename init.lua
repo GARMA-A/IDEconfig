@@ -118,7 +118,7 @@ vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "Indent Left (Visual)" })
 vim.keymap.set("n", "<leader><", "<<", { desc = "Indent Left" })
 vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
 
--- some term switching
+--some term switching
 vim.keymap.set("n", "<A-1>", function()
 	require("harpoon.term").gotoTerminal(1)
 end)
@@ -128,8 +128,7 @@ end)
 vim.keymap.set("n", "<A-3>", function()
 	require("harpoon.term").gotoTerminal(3)
 end)
-
---------
+-------------------------------------
 
 vim.keymap.set("n", ">", function()
 	require("harpoon.ui").nav_next()
@@ -156,7 +155,19 @@ end, { desc = "Go to Harpoon window 4" })
 
 ------------------------------------------------------------------------
 ------------------------------------------------------------------------
---copilot remaps
+
+-- Jump to first focusable floating window
+function _G.focus_floating_window()
+	for _, win in ipairs(vim.api.nvim_list_wins()) do
+		local cfg = vim.api.nvim_win_get_config(win)
+		if cfg.focusable and cfg.relative and cfg.relative ~= "" then
+			vim.api.nvim_set_current_win(win)
+			return
+		end
+	end
+end
+
+vim.keymap.set("n", "<A-f>", _G.focus_floating_window, { desc = "Focus floating window" })
 ----------------------------------
 ----------------------------------
 ----------------------------------
