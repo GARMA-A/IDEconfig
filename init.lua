@@ -271,6 +271,13 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		vim.cmd("GoFmt")
 	end,
 })
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = { "Dockerfile", "*.dockerfile" },
+	callback = function()
+		vim.bo.filetype = "dockerfile"
+	end,
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -770,6 +777,7 @@ require("lazy").setup({
 				},
 
 				yamlls = {},
+				dockerls = {},
 
 				tsserver = {
 					settings = {
@@ -895,6 +903,18 @@ require("lazy").setup({
 									completion = true,
 								},
 							}
+						end
+						if server_name == "dockerls" then
+							opts.settings = {
+								docker = {
+									languageserver = {
+										formatter = {
+											ignoreMultilineInstructions = true, -- Optional: Ignore multiline instructions for formatting
+										},
+									},
+								},
+							}
+							opts.filetypes = { "dockerfile" } -- Ensure dockerls attaches to Dockerfile filetype
 						end
 
 						require("lspconfig")[server_name].setup(opts)
