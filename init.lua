@@ -316,6 +316,14 @@ require("lazy").setup({
 		build = ':lua require("go.install").update_all_sync()',
 	},
 	{
+		"ekalinin/Dockerfile.vim",
+		ft = "dockerfile",
+	},
+	{
+		"stephpy/vim-yaml",
+		ft = "yaml",
+	},
+	{
 		"iamcco/markdown-preview.nvim",
 		build = "cd app && npm install",
 		ft = { "markdown" },
@@ -761,6 +769,8 @@ require("lazy").setup({
 					},
 				},
 
+				yamlls = {},
+
 				tsserver = {
 					settings = {
 						typescript = {
@@ -832,6 +842,7 @@ require("lazy").setup({
 					"gopls",
 					"gofumpt",
 					"tailwindcss-language-server",
+					"yaml-language-server",
 				},
 			})
 
@@ -870,6 +881,18 @@ require("lazy").setup({
 								userLanguages = {
 									typescriptreact = "html",
 									javascriptreact = "html",
+								},
+							}
+						end
+						if server_name == "yamlls" then
+							opts.settings = {
+								yaml = {
+									schemas = {
+										["https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json"] = "docker-compose*.yml",
+									},
+									validate = true,
+									hover = true,
+									completion = true,
 								},
 							}
 						end
