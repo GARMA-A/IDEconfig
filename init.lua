@@ -323,6 +323,14 @@ require("lazy").setup({
 		ft = { "go", "gomod" },
 		build = ':lua require("go.install").update_all_sync()',
 	},
+	-- #00000
+	{
+		"norcalli/nvim-colorizer.lua",
+		event = "VeryLazy", -- lazy-load on BufReadPre or VeryLazy
+		config = function()
+			require("colorizer").setup()
+		end,
+	},
 	{
 		"andymass/vim-matchup",
 		event = "VeryLazy",
