@@ -66,7 +66,8 @@ vim.keymap.set("n", "}", "<C-d>", opts)
 
 vim.keymap.set("n", "{", "<C-u>", opts)
 
-vim.keymap.set({ "n", "v" }, "<C-x>", "%", { noremap = true, silent = true })
+vim.keymap.set("n", "<C-x>", "<Plug>(matchup-%)", {})
+vim.keymap.set("v", "<C-x>", "<Plug>(matchup-%)", {})
 
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
@@ -321,6 +322,10 @@ require("lazy").setup({
 		event = { "CmdlineEnter" },
 		ft = { "go", "gomod" },
 		build = ':lua require("go.install").update_all_sync()',
+	},
+	{
+		"andymass/vim-matchup",
+		event = "VeryLazy",
 	},
 	{
 		"ekalinin/Dockerfile.vim",
@@ -1146,6 +1151,9 @@ require("lazy").setup({
 				additional_vim_regex_highlighting = { "ruby" },
 			},
 			indent = { enable = true, disable = { "ruby" } },
+			matchup = {
+				enable = true,
+			},
 		},
 	},
 }, {
