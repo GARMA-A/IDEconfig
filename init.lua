@@ -119,16 +119,22 @@ vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "Indent Left (Visual)" })
 vim.keymap.set("n", "<leader><", "<<", { desc = "Indent Left" })
 vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
 
---some term switching
-vim.keymap.set("n", "<A-1>", function()
-	require("harpoon.term").gotoTerminal(1)
-end)
-vim.keymap.set("n", "<A-2>", function()
-	require("harpoon.term").gotoTerminal(2)
-end)
-vim.keymap.set("n", "<A-3>", function()
-	require("harpoon.term").gotoTerminal(3)
-end)
+-- helper: cd to current buffer’s dir (if any)
+local function harpoon_cd_to_bufdir()
+	local bufname = vim.api.nvim_buf_get_name(0)
+	if bufname ~= "" then
+		local dir = vim.fn.fnamemodify(bufname, ":p:h")
+		vim.cmd("lcd " .. vim.fn.fnameescape(dir))
+	end
+end
+
+-- set up Alt‑1,2,3 to cd + gotoTerminal
+for i = 1, 3 do
+	vim.keymap.set("n", "<A-" .. i .. ">", function()
+		harpoon_cd_to_bufdir()
+		require("harpoon.term").gotoTerminal(i)
+	end, { noremap = true, silent = true })
+end
 -------------------------------------
 
 vim.keymap.set("n", ">", function()
@@ -207,35 +213,49 @@ end, { noremap = true, silent = true, desc = "Vertical split (half screen)" })
 ------------------------------------
 ------------------------------------
 ------------------------------------
+local term_buf_id = nil
+local term_win_id = nil
+
 function ToggleBottomTerminal()
+	-- determine "target" cwd: use current buffer's dir, else fallback to global cwd
+	local bufn = vim.api.nvim_get_current_buf()
+	local bufname = vim.api.nvim_buf_get_name(bufn)
+	local cwd = ""
+	if bufname ~= "" then
+		cwd = vim.fn.fnamemodify(bufname, ":p:h")
+	else
+		cwd = vim.fn.getcwd()
+	end
+
 	if term_win_id and vim.api.nvim_win_is_valid(term_win_id) then
-		-- Hide the terminal if it's open
+		-- hide it if already visible
 		vim.api.nvim_win_hide(term_win_id)
 		term_win_id = nil
 	else
-		-- Check if the terminal buffer already exists
+		-- if the buffer exists, reuse it; otherwise create a new one
 		if term_buf_id and vim.api.nvim_buf_is_valid(term_buf_id) then
-			-- Reopen the existing terminal buffer in a new split
 			vim.cmd("botright new")
 			vim.api.nvim_win_set_height(0, 10)
 			vim.api.nvim_win_set_buf(0, term_buf_id)
 		else
-			-- Create a new terminal
-			vim.cmd("botright new") -- Open at bottom
-			vim.api.nvim_win_set_height(0, 10) -- Set height
-			vim.cmd("term") -- Open terminal
-			term_buf_id = vim.api.nvim_get_current_buf() -- Store buffer ID
+			vim.cmd("botright new")
+			vim.api.nvim_win_set_height(0, 10)
+			-- set local cwd of this window to the target dir
+			vim.cmd("lcd " .. vim.fn.fnameescape(cwd))
+			-- spawn a shell
+			vim.cmd("term")
+			term_buf_id = vim.api.nvim_get_current_buf()
 		end
-		-- Ensure no background for the small terminal
-		vim.api.nvim_win_set_option(0, "winhighlight", "Normal:Normal,NormalNC:Normal")
 
-		-- Enter insert mode and store window ID
+		-- remove any funky background highlights
+		vim.api.nvim_win_set_option(0, "winhighlight", "Normal:Normal,NormalNC:Normal")
 		vim.cmd("startinsert")
+
 		term_win_id = vim.api.nvim_get_current_win()
 	end
 end
 
--- Key mapping to toggle the terminal
+-- map Alt-- to toggle
 vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
 
 vim.api.nvim_create_autocmd("LspAttach", {
