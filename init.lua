@@ -122,11 +122,14 @@ vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
 -- helper: cd to current buffer’s dir (if any)
 local function harpoon_cd_to_bufdir()
 	local bufname = vim.api.nvim_buf_get_name(0)
-	if bufname ~= "" then
+	if bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
 		local dir = vim.fn.fnamemodify(bufname, ":p:h")
-		vim.cmd("lcd " .. vim.fn.fnameescape(dir))
+		if dir ~= "" and vim.fn.isdirectory(dir) == 1 then
+			vim.cmd("lcd " .. vim.fn.fnameescape(dir))
+		end
 	end
 end
+
 
 -- set up Alt‑1,2,3 to cd + gotoTerminal
 for i = 1, 3 do
@@ -221,7 +224,7 @@ function ToggleBottomTerminal()
 	local bufn = vim.api.nvim_get_current_buf()
 	local bufname = vim.api.nvim_buf_get_name(bufn)
 	local cwd = ""
-	if bufname ~= "" then
+	if bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
 		cwd = vim.fn.fnamemodify(bufname, ":p:h")
 	else
 		cwd = vim.fn.getcwd()
@@ -240,8 +243,10 @@ function ToggleBottomTerminal()
 		else
 			vim.cmd("botright new")
 			vim.api.nvim_win_set_height(0, 10)
-			-- set local cwd of this window to the target dir
-			vim.cmd("lcd " .. vim.fn.fnameescape(cwd))
+			-- set local cwd of this window to the target dir, only if valid
+			if cwd ~= "" and vim.fn.isdirectory(cwd) == 1 then
+				vim.cmd("lcd " .. vim.fn.fnameescape(cwd))
+			end
 			-- spawn a shell
 			vim.cmd("term")
 			term_buf_id = vim.api.nvim_get_current_buf()
