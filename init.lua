@@ -119,25 +119,22 @@ vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "Indent Left (Visual)" })
 vim.keymap.set("n", "<leader><", "<<", { desc = "Indent Left" })
 vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
 
--- helper: cd to current buffer’s dir (if any)
-local function harpoon_cd_to_bufdir()
-	local bufname = vim.api.nvim_buf_get_name(0)
-	if bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
-		local dir = vim.fn.fnamemodify(bufname, ":p:h")
-		if dir ~= "" and vim.fn.isdirectory(dir) == 1 then
-			vim.cmd("lcd " .. vim.fn.fnameescape(dir))
-		end
-	end
-end
+vim.keymap.set("n", "<A-1>", function()
+	require("harpoon.term").gotoTerminal(1)
+end, { noremap = true, silent = true })
 
+vim.keymap.set("n", "<A-2>", function()
+	require("harpoon.term").gotoTerminal(2)
+end, { noremap = true, silent = true })
 
--- set up Alt‑1,2,3 to cd + gotoTerminal
-for i = 1, 3 do
-	vim.keymap.set("n", "<A-" .. i .. ">", function()
-		harpoon_cd_to_bufdir()
-		require("harpoon.term").gotoTerminal(i)
-	end, { noremap = true, silent = true })
-end
+vim.keymap.set("n", "<A-3>", function()
+	require("harpoon.term").gotoTerminal(3)
+end, { noremap = true, silent = true })
+
+vim.keymap.set("n", "<A-4>", function()
+	require("harpoon.term").gotoTerminal(4)
+end, { noremap = true, silent = true })
+
 -------------------------------------
 
 vim.keymap.set("n", ">", function()
@@ -204,6 +201,30 @@ end, { noremap = true, silent = true, desc = "Open Copilot Chat and enter insert
 ----------------------------------
 ----------------------------------
 ----------------------------------
+---PASTE IMAGE FROM CLIPBOARD
+vim.api.nvim_create_user_command("PasteImage", function()
+	local filename = vim.fn.input("Image filename: ", "image.png")
+	if filename == "" then
+		print("❌ No filename provided.")
+		return
+	end
+
+	-- Wrap the filename in quotes to handle spaces
+	local cmd = 'xclip -selection clipboard -t image/png -o > "' .. filename .. '"'
+	local result = vim.fn.system(cmd)
+
+	-- Check if file is actually created and not empty
+	local stat = vim.loop.fs_stat(filename)
+	if stat and stat.size > 1 then
+		print("✅ Image saved as " .. filename)
+	else
+		print("❌ Failed to save image. Clipboard may not contain an image.")
+	end
+end, {})
+----
+----
+----
+----
 --- split window
 vim.keymap.set("n", "<leader>wo", function()
 	-- Split the window vertically
@@ -348,7 +369,38 @@ require("lazy").setup({
 		ft = { "go", "gomod" },
 		build = ':lua require("go.install").update_all_sync()',
 	},
-	-- #00000
+	{
+		"neovim/nvim-lspconfig",
+		opts = {
+			servers = {
+				sqlls = {
+					cmd = { "sql-language-server", "up", "--method", "stdio" },
+					filetypes = { "sql" },
+					root_dir = function()
+						return vim.loop.cwd()
+					end,
+				},
+				-- You can add more LSPs here if needed
+			},
+		},
+	},
+	{
+		"kdheepak/lazygit.nvim",
+		lazy = true, -- load on demand
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+			"nvim-lua/plenary.nvim",
+		},
+		keys = {
+			-- map <leader>lg to open lazygit
+			{ "<leader>lg", ":LazyGit<CR>", desc = "Open Lazygit" },
+			-- or via Telescope
+			{ "<leader>gg", ":Telescope lazygit<CR>", desc = "Telescope Lazygit" },
+		},
+		config = function()
+			require("telescope").load_extension("lazygit")
+		end,
+	},
 	{
 		"norcalli/nvim-colorizer.lua",
 		event = "VeryLazy", -- lazy-load on BufReadPre or VeryLazy
@@ -812,6 +864,13 @@ require("lazy").setup({
 							completeUnimported = true,
 						},
 					},
+				},
+				sqlls = {
+					cmd = { "sql-language-server", "up", "--method", "stdio" },
+					filetypes = { "sql" },
+					root_dir = function()
+						return vim.loop.cwd()
+					end,
 				},
 
 				yamlls = {},
