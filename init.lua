@@ -380,7 +380,6 @@ require("lazy").setup({
 						return vim.loop.cwd()
 					end,
 				},
-				-- You can add more LSPs here if needed
 			},
 		},
 	},
@@ -948,6 +947,7 @@ require("lazy").setup({
 					"gofumpt",
 					"tailwindcss-language-server",
 					"yaml-language-server",
+					"sqlls",
 				},
 			})
 
@@ -1055,6 +1055,17 @@ require("lazy").setup({
 				c = { "clang-format" }, -- Added clang-format for C files
 				cpp = { "clang-format" }, -- Added clang-format for C++ files
 				python = { "black" }, -- Added black for Python files
+				sql = { "pg_format" },
+			},
+			formatters = {
+				pg_format = {
+					prepend_args = {
+						"--keyword-case",
+						"upper",
+						"--spaces",
+						"2",
+					},
+				},
 			},
 		},
 	},
