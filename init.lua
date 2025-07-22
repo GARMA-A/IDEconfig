@@ -201,9 +201,13 @@ end, { noremap = true, silent = true, desc = "Open Copilot Chat and enter insert
 ----------------------------------
 ----------------------------------
 ----------------------------------
----PASTE IMAGE FROM CLIPBOARD
+-- Define a global to hold the last image filename
+vim.g.last_image_filename = vim.g.last_image_filename or "image.png"
+
 vim.api.nvim_create_user_command("PasteImage", function()
-	local filename = vim.fn.input("Image filename: ", "image.png")
+	-- Use the last filename as the default
+	local default = vim.g.last_image_filename
+	local filename = vim.fn.input("Image filename: ", default)
 	if filename == "" then
 		print("❌ No filename provided.")
 		return
@@ -216,6 +220,8 @@ vim.api.nvim_create_user_command("PasteImage", function()
 	-- Check if file is actually created and not empty
 	local stat = vim.loop.fs_stat(filename)
 	if stat and stat.size > 1 then
+		-- Save this as the new default
+		vim.g.last_image_filename = filename
 		print("✅ Image saved as " .. filename)
 	else
 		print("❌ Failed to save image. Clipboard may not contain an image.")
