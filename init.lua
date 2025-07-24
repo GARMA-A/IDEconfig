@@ -331,6 +331,19 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	end,
 })
 
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.prisma",
+	callback = function()
+		vim.bo.filetype = "prisma"
+	end,
+})
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.prisma",
+	callback = function()
+		vim.bo.filetype = "graphql"
+	end,
+})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
 	local lazyrepo = "https://github.com/folke/lazy.nvim.git"
@@ -384,6 +397,13 @@ require("lazy").setup({
 					filetypes = { "sql" },
 					root_dir = function()
 						return vim.loop.cwd()
+					end,
+				},
+				prisma = {
+					cmd = { "prisma-language-server", "--stdio" },
+					filetypes = { "prisma" },
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern("schema.prisma", ".git")(fname) or vim.fn.getcwd()
 					end,
 				},
 			},
@@ -934,12 +954,22 @@ require("lazy").setup({
 						},
 					},
 				},
+
+				prisma = {
+					cmd = { "prisma-language-server", "--stdio" },
+					filetypes = { "prisma" },
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern("schema.prisma", ".git")(fname) or vim.fn.getcwd()
+					end,
+				},
 			}
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
 				"tsserver",
 				"eslint",
+				"prismals",
+				"html-lsp", -- ✅ HTML support
 			})
 			require("mason-tool-installer").setup({
 				ensure_installed = {
@@ -954,6 +984,7 @@ require("lazy").setup({
 					"tailwindcss-language-server",
 					"yaml-language-server",
 					"sqlls",
+					"prisma-language-server",
 				},
 			})
 
@@ -1062,6 +1093,7 @@ require("lazy").setup({
 				cpp = { "clang-format" }, -- Added clang-format for C++ files
 				python = { "black" }, -- Added black for Python files
 				sql = { "pg_format" },
+				prisma = { "prisma-language-server" },
 			},
 			formatters = {
 				pg_format = {
@@ -1071,6 +1103,10 @@ require("lazy").setup({
 						"--spaces",
 						"2",
 					},
+				},
+				prisma_language_server = {
+					-- Optional: Add args if needed
+					-- prepend_args = { "--format" },
 				},
 			},
 		},
