@@ -21,7 +21,7 @@ vim.opt.ignorecase = true
 vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 vim.opt.updatetime = 250
-vim.opt.timeoutlen = 300
+vim.opt.timeoutlen = 50
 vim.opt.splitright = true
 vim.opt.splitbelow = true
 vim.opt.list = true
@@ -594,10 +594,6 @@ require("lazy").setup({
 			-- Keymap to toggle Oil with '_'
 			vim.keymap.set("n", "<A-s>", "<CMD>Oil<CR>", { desc = "Toggle Oil" })
 		end,
-	},
-	{
-		"mg979/vim-visual-multi",
-		branch = "master",
 	},
 	{
 		"windwp/nvim-autopairs",
