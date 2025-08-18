@@ -986,7 +986,7 @@ require("lazy").setup({
 					"prisma-language-server",
 					"angular-language-server",
 					"omnisharp", -- Ensures OmniSharp is installed
-					"dotnet-format", -- Optional: C# formatter
+					--"dotnet-format", -- Optional: C# formatter
 				},
 			})
 
