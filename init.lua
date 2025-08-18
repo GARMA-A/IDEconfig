@@ -410,23 +410,6 @@ require("lazy").setup({
 		},
 	},
 	{
-		"kdheepak/lazygit.nvim",
-		lazy = true, -- load on demand
-		dependencies = {
-			"nvim-telescope/telescope.nvim",
-			"nvim-lua/plenary.nvim",
-		},
-		keys = {
-			-- map <leader>lg to open lazygit
-			{ "<leader>lg", ":LazyGit<CR>", desc = "Open Lazygit" },
-			-- or via Telescope
-			{ "<leader>gg", ":Telescope lazygit<CR>", desc = "Telescope Lazygit" },
-		},
-		config = function()
-			require("telescope").load_extension("lazygit")
-		end,
-	},
-	{
 		"norcalli/nvim-colorizer.lua",
 		event = "VeryLazy", -- lazy-load on BufReadPre or VeryLazy
 		config = function()
@@ -958,6 +941,26 @@ require("lazy").setup({
 						return require("lspconfig.util").root_pattern("schema.prisma", ".git")(fname) or vim.fn.getcwd()
 					end,
 				},
+				omnisharp = {
+					cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
+					filetypes = { "cs", "csx", "vb" },
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git")(fname)
+							or vim.fn.getcwd()
+					end,
+					settings = {
+						FormattingOptions = {
+							EnableEditorConfigSupport = true,
+							OrganizeImports = true,
+						},
+						RoslynExtensionsOptions = {
+							EnableAnalyzersSupport = true,
+							EnableImportCompletion = true,
+							EnableDecompilationSupport = true,
+						},
+						SdkIncludePrereleases = true,
+					},
+				},
 			}
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
@@ -981,6 +984,9 @@ require("lazy").setup({
 					"yaml-language-server",
 					"sqlls",
 					"prisma-language-server",
+					"angular-language-server",
+					"omnisharp", -- Ensures OmniSharp is installed
+					"dotnet-format", -- Optional: C# formatter
 				},
 			})
 
@@ -1045,6 +1051,24 @@ require("lazy").setup({
 								},
 							}
 							opts.filetypes = { "dockerfile" } -- Ensure dockerls attaches to Dockerfile filetype
+						end
+						if server_name == "angularls" then
+							opts.filetypes = { "typescript", "html", "typescriptreact", "typescript.tsx" }
+							opts.root_dir = require("lspconfig").util.root_pattern("angular.json", "project.json")
+							opts.cmd = {
+								"ngserver",
+								"--stdio",
+								"--tsProbeLocations",
+								vim.fn.expand("$PWD/node_modules"),
+								"--ngProbeLocations",
+								vim.fn.expand("$PWD/node_modules"),
+							}
+						end
+						if server_name == "omnisharp" then
+							opts.cmd = servers.omnisharp.cmd
+							opts.filetypes = servers.omnisharp.filetypes
+							opts.root_dir = servers.omnisharp.root_dir
+							opts.settings = servers.omnisharp.settings
 						end
 
 						require("lspconfig")[server_name].setup(opts)
@@ -1285,6 +1309,15 @@ require("lazy").setup({
 				"query",
 				"vim",
 				"vimdoc",
+				"c_sharp",
+				"go", -- For Go (since you use gopls)
+				"gomod", -- For Go modules
+				"gotmpl", -- For Go templates
+				"dockerfile", -- For Dockerfiles (since you use dockerls)
+				"yaml", -- For YAML (since you use yamlls)
+				"sql", -- For SQL (since you use sqlls)
+				"css", -- For CSS (since you use cssls)
+				"scss",
 			},
 			auto_install = true,
 			highlight = {
