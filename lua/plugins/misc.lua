@@ -36,12 +36,23 @@ return {
 	
 	{
 		"mattn/emmet-vim",
-		-- Add event or filetype for lazy loading
-		ft = { "html", "css", "javascript", "typescript", "javascriptreact", "typescriptreact" },
+		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact" },
 		init = function()
-			-- Set configuration during init
-			vim.g.user_emmet_mode = "n" -- only enable normal mode functions
-			vim.g.user_emmet_leader_key = "<C-,>" -- default <C-y>
+			-- Optional: Customize for Next.js JSX/TSX (e.g., className instead of class)
+			vim.g.user_emmet_settings = {
+				typescriptreact = {
+					extends = "jsx",
+					attributes = {
+						["className"] = "class", -- Expand class to className
+					},
+				},
+				javascriptreact = {
+					extends = "jsx",
+					attributes = {
+						["className"] = "class",
+					},
+				},
+			}
 		end,
 	},
 	
@@ -59,9 +70,44 @@ return {
 	
 	{
 		"saecki/crates.nvim",
-		tag = "stable",
+		ft = { "toml" },
 		config = function()
-			require("crates").setup()
+			require("crates").setup({
+				completion = {
+					cmp = {
+						enabled = true,
+					},
+				},
+			})
+			require("cmp").setup.buffer({
+				sources = { { name = "crates" } },
+			})
+		end,
+	},
+	
+	{
+		"windwp/nvim-ts-autotag",
+		ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact" },
+		config = function()
+			require("nvim-ts-autotag").setup()
+		end,
+	},
+	
+	{
+		"elentok/format-on-save.nvim",
+		config = function()
+			require("format-on-save").setup({
+				formatters = {
+					{
+						filename_pattern = { "*.tsx", "*.jsx", "*.ts", "*.js" },
+						command = "eslint --fix --quiet",
+						-- For projects with local ESLint installation:
+						command = "./node_modules/.bin/eslint --fix --quiet $FILE_PATH",
+					},
+				},
+				-- Optional: Enable format on save by default
+				format_on_save = true,
+			})
 		end,
 	},
 }
