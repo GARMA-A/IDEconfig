@@ -100,15 +100,15 @@ end
 -- Wrapper functions for harpoon terminals that set working directory
 local function goto_harpoon_terminal(term_num)
 	local cwd = get_current_working_directory()
-	
+
 	-- Get or create the terminal
 	require("harpoon.term").gotoTerminal(term_num)
-	
+
 	-- Set the working directory if valid
 	if cwd ~= "" and vim.fn.isdirectory(cwd) == 1 then
 		-- Send 'cd' command to the terminal
 		local escaped_cwd = vim.fn.fnameescape(cwd)
-		require("harpoon.term").sendCommand(term_num, "cd " .. escaped_cwd .. "\n")
+		require("harpoon.term").sendCommand(term_num, "cd " .. escaped_cwd .. "&& cls")
 	end
 end
 
@@ -282,3 +282,4 @@ end
 
 -- map Alt-- to toggle
 vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
+
