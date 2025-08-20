@@ -84,20 +84,48 @@ vim.keymap.set("n", "<leader>o", "<C-o>", { desc = "Indent Left (Visual)" })
 vim.keymap.set("n", "<leader><", "<<", { desc = "Indent Left" })
 vim.keymap.set("v", "<leader><", "<gv", { desc = "Indent Left (Visual)" })
 
+-- Helper function to determine current working directory (same logic as ToggleBottomTerminal)
+local function get_current_working_directory()
+	local bufn = vim.api.nvim_get_current_buf()
+	local bufname = vim.api.nvim_buf_get_name(bufn)
+	local cwd = ""
+	if bufname ~= "" and vim.fn.filereadable(bufname) == 1 then
+		cwd = vim.fn.fnamemodify(bufname, ":p:h")
+	else
+		cwd = vim.fn.getcwd()
+	end
+	return cwd
+end
+
+-- Wrapper functions for harpoon terminals that set working directory
+local function goto_harpoon_terminal(term_num)
+	local cwd = get_current_working_directory()
+	
+	-- Get or create the terminal
+	require("harpoon.term").gotoTerminal(term_num)
+	
+	-- Set the working directory if valid
+	if cwd ~= "" and vim.fn.isdirectory(cwd) == 1 then
+		-- Send 'cd' command to the terminal
+		local escaped_cwd = vim.fn.fnameescape(cwd)
+		require("harpoon.term").sendCommand(term_num, "cd " .. escaped_cwd .. "\n")
+	end
+end
+
 vim.keymap.set("n", "<A-1>", function()
-	require("harpoon.term").gotoTerminal(1)
+	goto_harpoon_terminal(1)
 end, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<A-2>", function()
-	require("harpoon.term").gotoTerminal(2)
+	goto_harpoon_terminal(2)
 end, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<A-3>", function()
-	require("harpoon.term").gotoTerminal(3)
+	goto_harpoon_terminal(3)
 end, { noremap = true, silent = true })
 
 vim.keymap.set("n", "<A-4>", function()
-	require("harpoon.term").gotoTerminal(4)
+	goto_harpoon_terminal(4)
 end, { noremap = true, silent = true })
 
 -------------------------------------
