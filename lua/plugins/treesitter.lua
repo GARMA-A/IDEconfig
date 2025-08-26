@@ -29,6 +29,7 @@ return {
 				"sql", -- For SQL (since you use sqlls)
 				"css", -- For CSS (since you use cssls)
 				"scss",
+				"svelte", -- For Svelte support
 			},
 			auto_install = true,
 			highlight = {

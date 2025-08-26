@@ -36,7 +36,7 @@ return {
 	
 	{
 		"mattn/emmet-vim",
-		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact" },
+		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact", "svelte" },
 		init = function()
 			-- Optional: Customize for Next.js JSX/TSX (e.g., className instead of class)
 			vim.g.user_emmet_settings = {
@@ -51,6 +51,9 @@ return {
 					attributes = {
 						["className"] = "class",
 					},
+				},
+				svelte = {
+					extends = "html",
 				},
 			}
 		end,
@@ -87,7 +90,7 @@ return {
 	
 	{
 		"windwp/nvim-ts-autotag",
-		ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact" },
+		ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact", "svelte" },
 		config = function()
 			require("nvim-ts-autotag").setup()
 		end,
