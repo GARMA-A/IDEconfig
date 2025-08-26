@@ -31,8 +31,13 @@ vim.keymap.set("n", "}", "<C-d>", opts)
 
 vim.keymap.set("n", "{", "<C-u>", opts)
 
-vim.keymap.set("n", "<C-x>", "<Plug>(matchup-%)", {})
-vim.keymap.set("v", "<C-x>", "<Plug>(matchup-%)", {})
+vim.keymap.set("n", "<C-x>", "<Plug>(matchup-%)", { desc = "Navigate to matching HTML tag/bracket" })
+vim.keymap.set("v", "<C-x>", "<Plug>(matchup-%)", { desc = "Navigate to matching HTML tag/bracket" })
+
+-- Additional vim-matchup keymaps for enhanced HTML navigation
+vim.keymap.set("n", "g%", "<Plug>(matchup-g%)", { desc = "Navigate backwards to matching tag" })
+vim.keymap.set("x", "g%", "<Plug>(matchup-g%)", { desc = "Navigate backwards to matching tag" })
+vim.keymap.set("o", "g%", "<Plug>(matchup-g%)", { desc = "Navigate backwards to matching tag" })
 
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 

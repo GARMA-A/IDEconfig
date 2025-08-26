@@ -51,3 +51,14 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "graphql"
 	end,
 })
+
+-- Configure HTML files for better vim-matchup navigation
+vim.api.nvim_create_autocmd("FileType", {
+	pattern = { "html", "xml", "javascriptreact", "typescriptreact" },
+	callback = function()
+		-- Ensure matchup is enabled for HTML-like files
+		vim.b.matchup_matchparen_enabled = 1
+		-- Set HTML-specific matching patterns if needed
+		-- This ensures that <C-x> works optimally with HTML tags
+	end,
+})

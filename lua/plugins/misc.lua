@@ -13,6 +13,27 @@ return {
 	{
 		"andymass/vim-matchup",
 		event = "VeryLazy",
+		config = function()
+			-- Configure vim-matchup for better HTML tag navigation
+			vim.g.matchup_matchparen_offscreen = { method = "popup" }
+			vim.g.matchup_surround_enabled = 1
+			
+			-- Enable HTML tag matching
+			vim.g.matchup_matchparen_deferred = 1
+			vim.g.matchup_matchparen_hi_surround_always = 1
+			
+			-- Configure for HTML and related file types
+			vim.g.matchup_delim_start_plaintext = 0
+			
+			-- Enable better matching for HTML/XML tags
+			vim.g.matchup_matchparen_enabled = 1
+			vim.g.matchup_motion_enabled = 1
+			vim.g.matchup_text_obj_enabled = 1
+			
+			-- Optimize performance for large files
+			vim.g.matchup_matchparen_timeout = 300
+			vim.g.matchup_matchparen_insert_timeout = 60
+		end,
 	},
 	
 	{
