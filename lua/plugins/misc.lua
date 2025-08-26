@@ -13,6 +13,37 @@ return {
 	{
 		"andymass/vim-matchup",
 		event = "VeryLazy",
+		config = function()
+			-- Enable matchup for better tag navigation
+			vim.g.matchup_matchparen_offscreen = { method = "popup" }
+			
+			-- Tell matchup that Svelte files should use HTML-style tag matching
+			vim.g.matchup_override_vimtex = 1
+			
+			-- Configure matchup to work with Svelte files
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = "svelte",
+				callback = function()
+					-- Enable all matchup features for Svelte files
+					vim.b.matchup_matchparen_enabled = 1
+					vim.b.matchup_motion_enabled = 1
+					vim.b.matchup_text_obj_enabled = 1
+					
+					-- Ensure Svelte files are treated like HTML for tag matching
+					vim.b.matchup_matchpref = { html = 1 }
+				end,
+			})
+			
+			-- Also ensure HTML files work properly
+			vim.api.nvim_create_autocmd("FileType", {
+				pattern = { "html", "xml" },
+				callback = function()
+					vim.b.matchup_matchparen_enabled = 1
+					vim.b.matchup_motion_enabled = 1
+					vim.b.matchup_text_obj_enabled = 1
+				end,
+			})
+		end,
 	},
 	
 	{
