@@ -33,6 +33,9 @@ return {
 			-- Optimize performance for large files
 			vim.g.matchup_matchparen_timeout = 300
 			vim.g.matchup_matchparen_insert_timeout = 60
+			
+			-- Ensure proper highlighting and navigation
+			vim.g.matchup_delim_nomids = 0  -- Allow middle delimiters (useful for some HTML constructs)
 		end,
 	},
 	

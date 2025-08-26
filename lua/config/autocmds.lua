@@ -60,5 +60,8 @@ vim.api.nvim_create_autocmd("FileType", {
 		vim.b.matchup_matchparen_enabled = 1
 		-- Set HTML-specific matching patterns if needed
 		-- This ensures that <C-x> works optimally with HTML tags
+		
+		-- Additional buffer-local settings for better HTML navigation
+		vim.opt_local.matchpairs:append("<:>")  -- Add angle brackets to matchpairs
 	end,
 })
