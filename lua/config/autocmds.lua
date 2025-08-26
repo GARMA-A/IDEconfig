@@ -51,3 +51,11 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "graphql"
 	end,
 })
+
+-- Ensure Svelte files are properly detected
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.svelte",
+	callback = function()
+		vim.bo.filetype = "svelte"
+	end,
+})

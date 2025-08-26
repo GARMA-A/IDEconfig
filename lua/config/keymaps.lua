@@ -34,6 +34,10 @@ vim.keymap.set("n", "{", "<C-u>", opts)
 vim.keymap.set("n", "<C-x>", "<Plug>(matchup-%)", {})
 vim.keymap.set("v", "<C-x>", "<Plug>(matchup-%)", {})
 
+-- Map % key for tag navigation (ensure it works with matchup)
+vim.keymap.set("n", "%", "<Plug>(matchup-%)", {})
+vim.keymap.set("v", "%", "<Plug>(matchup-%)", {})
+
 vim.keymap.set("t", "<Esc><Esc>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 vim.keymap.set("n", "<A-left>", "<C-w><C-h>", { desc = "Move focus to the left window" })

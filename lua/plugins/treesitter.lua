@@ -39,6 +39,8 @@ return {
 			indent = { enable = true, disable = { "ruby" } },
 			matchup = {
 				enable = true,
+				-- Ensure matchup works with all supported languages including Svelte
+				disable = {}, -- Don't disable for any language
 			},
 		},
 	},
