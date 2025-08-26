@@ -30,11 +30,22 @@ return {
 			end,
 			formatters_by_ft = {
 				lua = { "stylua" },
-				c = { "clang-format" }, -- Added clang-format for C files
-				cpp = { "clang-format" }, -- Added clang-format for C++ files
-				python = { "black" }, -- Added black for Python files
+				c = { "clang-format" },
+				cpp = { "clang-format" },
+				python = { "black" },
 				sql = { "pg_format" },
 				prisma = { "prisma-language-server" },
+
+				-- 🔥 Add Prettier for web dev
+				javascript = { "prettier" },
+				typescript = { "prettier" },
+				javascriptreact = { "prettier" },
+				typescriptreact = { "prettier" },
+				svelte = { "prettier" },
+				css = { "prettier" },
+				html = { "prettier" },
+				json = { "prettier" },
+				markdown = { "prettier" },
 			},
 			formatters = {
 				pg_format = {
@@ -45,11 +56,9 @@ return {
 						"2",
 					},
 				},
-				prisma_language_server = {
-					-- Optional: Add args if needed
-					-- prepend_args = { "--format" },
-				},
+				prisma_language_server = {},
 			},
 		},
 	},
 }
+

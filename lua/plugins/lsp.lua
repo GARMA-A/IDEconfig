@@ -154,6 +154,24 @@ return {
 					end,
 				},
 
+				svelte = {
+					filetypes = { "svelte" },
+					settings = {
+						svelte = {
+							plugin = {
+								svelte = {
+									compilerWarnings = {
+										unusedExportLet = "ignore", -- Example: suppress unused `export let` warnings
+									},
+								},
+								typescript = {
+									enabled = true, -- enable TS inside <script lang="ts">
+								},
+							},
+						},
+					},
+				},
+
 				yamlls = {},
 				dockerls = {},
 
@@ -248,6 +266,8 @@ return {
 				"css",
 				"prismals",
 				"html-lsp", -- ✅ HTML support
+				"svelte-language-server",
+				"prettier",
 			})
 			require("mason-tool-installer").setup({
 				ensure_installed = {
@@ -266,6 +286,8 @@ return {
 					"angular-language-server",
 					"omnisharp", -- Ensures OmniSharp is installed
 					--"dotnet-format", -- Optional: C# formatter
+					"svelte-language-server",
+					"prettier",
 				},
 			})
 
