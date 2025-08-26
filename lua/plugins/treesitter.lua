@@ -41,6 +41,8 @@ return {
 				enable = true,
 				-- Ensure matchup works with all supported languages including Svelte
 				disable = {}, -- Don't disable for any language
+				-- Include specific language configuration for better Svelte support
+				include_match_words = true,
 			},
 		},
 	},

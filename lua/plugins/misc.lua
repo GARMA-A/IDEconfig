@@ -20,6 +20,10 @@ return {
 			-- Tell matchup that Svelte files should use HTML-style tag matching
 			vim.g.matchup_override_vimtex = 1
 			
+			-- Configure global matchup settings for Svelte to use HTML matching
+			vim.g.matchup_matchpref = vim.g.matchup_matchpref or {}
+			vim.g.matchup_matchpref.svelte = "html"
+			
 			-- Configure matchup to work with Svelte files
 			vim.api.nvim_create_autocmd("FileType", {
 				pattern = "svelte",
@@ -29,8 +33,8 @@ return {
 					vim.b.matchup_motion_enabled = 1
 					vim.b.matchup_text_obj_enabled = 1
 					
-					-- Ensure Svelte files are treated like HTML for tag matching
-					vim.b.matchup_matchpref = { html = 1 }
+					-- Set the buffer to use HTML-style tag matching
+					vim.bo.matchpairs = "(:),{:},[:],<:>"
 				end,
 			})
 			

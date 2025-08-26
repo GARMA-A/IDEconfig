@@ -52,10 +52,16 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	end,
 })
 
--- Ensure Svelte files are properly detected
+-- Ensure Svelte files are properly detected and configured
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = "*.svelte",
 	callback = function()
 		vim.bo.filetype = "svelte"
+		-- Ensure HTML-style tag matching for Svelte files
+		vim.schedule(function()
+			if vim.bo.filetype == "svelte" then
+				vim.bo.matchpairs = "(:),{:},[:],<:>"
+			end
+		end)
 	end,
 })
