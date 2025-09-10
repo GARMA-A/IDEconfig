@@ -135,110 +135,96 @@ return {
 
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
-			local servers = {
-				html = {},
-				css = {},
-				gopls = {
-					settings = {
-						gopls = {
-							usePlaceholders = true,
-							completeUnimported = true,
-						},
+			
+			-- Import language-specific LSP configurations
+			local language_servers = {}
+			
+			-- Core web servers
+			language_servers.html = {}
+			language_servers.css = {}
+			language_servers.yamlls = {}
+			language_servers.dockerls = {}
+			
+			-- SQL server
+			language_servers.sqlls = {
+				cmd = { "sql-language-server", "up", "--method", "stdio" },
+				filetypes = { "sql" },
+				root_dir = function()
+					return vim.loop.cwd()
+				end,
+			}
+
+			-- Tailwind CSS
+			language_servers.tailwindcss = {
+				filetypes = {
+					"html",
+					"css",
+					"scss",
+					"javascript",
+					"javascriptreact",
+					"typescript",
+					"typescriptreact",
+					"svelte",
+					"vue",
+				},
+				init_options = {
+					userLanguages = {
+						typescriptreact = "typescript",
+						javascriptreact = "javascript",
 					},
 				},
-				sqlls = {
-					cmd = { "sql-language-server", "up", "--method", "stdio" },
-					filetypes = { "sql" },
-					root_dir = function()
-						return vim.loop.cwd()
-					end,
-				},
-
-				yamlls = {},
-				dockerls = {},
-
-				tsserver = {
-					settings = {
-						typescript = {
-							preferences = {
-								-- Enable Next.js-style path aliases (requires tsconfig.json "baseUrl" and "paths")
-								importModuleSpecifierPreference = "project=relative",
-							},
-							-- Enable React Server Components typing (Next.js 13+)
-							experimental = {
-								enableProjectDiagnostics = true,
-							},
-						},
-						javascript = {
-							preferences = {
-								importModuleSpecifierPreference = "project=relative",
-							},
-						},
-					},
-					-- Enable JSX/TSX support
-					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
-				},
-
-				tailwindcss = {
-					filetypes = {
-						"html",
-						"css",
-						"scss",
-						"javascript",
-						"javascriptreact",
-						"typescript",
-						"typescriptreact",
-						"svelte",
-						"vue",
-					},
-					init_options = {
-						userLanguages = {
-							typescriptreact = "typescript",
-							javascriptreact = "javascript",
-						},
-					},
-					settings = {
-						tailwindCSS = {
-							experimental = {
-								classRegex = {
-									"tw`([^`]*)",
-									"className=\\\\s*[\\\"']([^\\\"']*)",
-									"class:\\\\s*[\\\"']([^\\\"']*)",
-									"([\\\\w-]+)=\\\\s*[\\\"']([^\\\"']*)", -- For styled-components-like syntax
-								},
+				settings = {
+					tailwindCSS = {
+						experimental = {
+							classRegex = {
+								"tw`([^`]*)",
+								"className=\\\\s*[\\\"']([^\\\"']*)",
+								"class:\\\\s*[\\\"']([^\\\"']*)",
+								"([\\\\w-]+)=\\\\s*[\\\"']([^\\\"']*)", -- For styled-components-like syntax
 							},
 						},
-					},
-				},
-
-				prisma = {
-					cmd = { "prisma-language-server", "--stdio" },
-					filetypes = { "prisma" },
-					root_dir = function(fname)
-						return require("lspconfig.util").root_pattern("schema.prisma", ".git")(fname) or vim.fn.getcwd()
-					end,
-				},
-				omnisharp = {
-					cmd = { "omnisharp", "--languageserver", "--hostPID", tostring(vim.fn.getpid()) },
-					filetypes = { "cs", "csx", "vb" },
-					root_dir = function(fname)
-						return require("lspconfig.util").root_pattern("*.sln", "*.csproj", ".git")(fname)
-							or vim.fn.getcwd()
-					end,
-					settings = {
-						FormattingOptions = {
-							EnableEditorConfigSupport = true,
-							OrganizeImports = true,
-						},
-						RoslynExtensionsOptions = {
-							EnableAnalyzersSupport = true,
-							EnableImportCompletion = true,
-							EnableDecompilationSupport = true,
-						},
-						SdkIncludePrereleases = true,
 					},
 				},
 			}
+
+			-- Prisma
+			language_servers.prisma = {
+				cmd = { "prisma-language-server", "--stdio" },
+				filetypes = { "prisma" },
+				root_dir = function(fname)
+					return require("lspconfig.util").root_pattern("schema.prisma", ".git")(fname) or vim.fn.getcwd()
+				end,
+			}
+			
+			-- Import language-specific configurations
+			local js_config = require("plugins.lsp.js")
+			local ts_config = require("plugins.lsp.ts") 
+			local rust_config = require("plugins.lsp.rust")
+			local python_config = require("plugins.lsp.python")
+			local c_config = require("plugins.lsp.c")
+			local cpp_config = require("plugins.lsp.cpp")
+			local csharp_config = require("plugins.lsp.csharp")
+			
+			-- Merge language-specific configurations
+			language_servers = vim.tbl_deep_extend("force", language_servers, js_config)
+			language_servers = vim.tbl_deep_extend("force", language_servers, ts_config)
+			language_servers = vim.tbl_deep_extend("force", language_servers, rust_config)
+			language_servers = vim.tbl_deep_extend("force", language_servers, python_config)
+			language_servers = vim.tbl_deep_extend("force", language_servers, c_config)
+			language_servers = vim.tbl_deep_extend("force", language_servers, cpp_config)
+			language_servers = vim.tbl_deep_extend("force", language_servers, csharp_config)
+			
+			-- Go is handled separately by go.lua plugin, but add gopls for basic support
+			language_servers.gopls = {
+				settings = {
+					gopls = {
+						usePlaceholders = true,
+						completeUnimported = true,
+					},
+				},
+			}
+			
+			local servers = language_servers
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
@@ -251,21 +237,32 @@ return {
 			})
 			require("mason-tool-installer").setup({
 				ensure_installed = {
-					"typescript-language-server", -- ✅ Correct package name
+					-- TypeScript/JavaScript
+					"typescript-language-server",
 					"eslint",
-					"stylua",
-					"html-lsp", -- ✅ HTML support
-					"css-lsp", -- ✅ CSS support
 					"prettier",
+					-- Lua
+					"stylua",
+					-- HTML/CSS
+					"html-lsp",
+					"css-lsp",
+					-- Go
 					"gopls",
 					"gofumpt",
+					-- Rust
+					"rust-analyzer",
+					-- Python
+					"pyright",
+					-- C/C++
+					"clangd",
+					-- C#
+					"omnisharp",
+					-- Other tools
 					"tailwindcss-language-server",
 					"yaml-language-server",
 					"sqlls",
 					"prisma-language-server",
 					"angular-language-server",
-					"omnisharp", -- Ensures OmniSharp is installed
-					--"dotnet-format", -- Optional: C# formatter
 				},
 			})
 
