@@ -157,7 +157,9 @@ return {
 				yamlls = {},
 				dockerls = {},
 
-				tsserver = {
+				-- ✅ FIXED: Changed from 'tsserver' to 'ts_ls' and added single_file_support
+				ts_ls = {
+					single_file_support = true, -- ✅ This enables single file support!
 					settings = {
 						typescript = {
 							preferences = {
@@ -239,15 +241,15 @@ return {
 					},
 				},
 			}
+
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"tsserver",
-				"eslint",
+				"eslint", -- Keep this
+				-- Remove "tsserver" - it's now "ts_ls" and handled by servers table
 				"html",
 				"css",
 				"prismals",
-				"html-lsp", -- ✅ HTML support
 			})
 			require("mason-tool-installer").setup({
 				ensure_installed = {
@@ -354,6 +356,28 @@ return {
 					end,
 				},
 			})
+			vim.defer_fn(function()
+				require("lspconfig").ts_ls.setup({
+					capabilities = capabilities,
+					single_file_support = true,
+					on_attach = function(client, bufnr)
+						print("ts_ls attached to buffer " .. bufnr)
+					end,
+					settings = {
+						typescript = {
+							preferences = {
+								importModuleSpecifierPreference = "project-relative",
+							},
+						},
+						javascript = {
+							preferences = {
+								importModuleSpecifierPreference = "project-relative",
+							},
+						},
+					},
+					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+				})
+			end, 100)
 		end,
 	},
 }
