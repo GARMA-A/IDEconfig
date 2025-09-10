@@ -242,7 +242,6 @@ return {
 			local ensure_installed = vim.tbl_keys(servers or {})
 			vim.list_extend(ensure_installed, {
 				"stylua", -- Used to format Lua code
-				"tsserver",
 				"eslint",
 				"html",
 				"css",
@@ -302,8 +301,8 @@ return {
 							}
 							opts.init_options = {
 								userLanguages = {
-									typescriptreact = "html",
-									javascriptreact = "html",
+									typescriptreact = "typescript",
+									javascriptreact = "javascript",
 								},
 							}
 						end
@@ -342,6 +341,10 @@ return {
 								"--ngProbeLocations",
 								vim.fn.expand("$PWD/node_modules"),
 							}
+						end
+						if server_name == "tsserver" then
+							opts.settings = servers.tsserver.settings
+							opts.filetypes = servers.tsserver.filetypes
 						end
 						if server_name == "omnisharp" then
 							opts.cmd = servers.omnisharp.cmd
