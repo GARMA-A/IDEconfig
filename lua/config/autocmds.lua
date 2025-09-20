@@ -51,3 +51,13 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "graphql"
 	end,
 })
+
+-- EJS filetype detection
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.ejs",
+	callback = function()
+		vim.bo.filetype = "html"
+		-- Enable both HTML and JavaScript features
+		vim.bo.omnifunc = "htmlcomplete#CompleteTags"
+	end,
+})

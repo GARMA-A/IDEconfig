@@ -136,7 +136,9 @@ return {
 			local capabilities = vim.lsp.protocol.make_client_capabilities()
 			capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 			local servers = {
-				html = {},
+				html = {
+					filetypes = { "html", "templ" },
+				},
 				css = {},
 				gopls = {
 					settings = {
@@ -177,8 +179,8 @@ return {
 							},
 						},
 					},
-					-- Enable JSX/TSX support
-					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+					-- Enable JSX/TSX support and EJS files
+					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact", "html" },
 				},
 
 				tailwindcss = {
@@ -256,7 +258,7 @@ return {
 					"typescript-language-server", -- ✅ Correct package name
 					"eslint",
 					"stylua",
-					"html-lsp", -- ✅ HTML support
+					"html-lsp", -- ✅ HTML support (will handle EJS files)
 					"css-lsp", -- ✅ CSS support
 					"prettier",
 					"gopls",
@@ -278,6 +280,23 @@ return {
 							capabilities = capabilities,
 						}
 
+						if server_name == "html" then
+							-- Enable HTML LSP for EJS files
+							opts.filetypes = { "html", "templ" }
+							opts.settings = {
+								html = {
+									format = {
+										templating = true,
+										wrapLineLength = 120,
+										wrapAttributes = "auto",
+									},
+									hover = {
+										documentation = true,
+										references = true,
+									},
+								},
+							}
+						end
 						if server_name == "tailwindcss" or server_name == "tailwindcss-language-server" then
 							opts.settings = {
 								tailwindCSS = {
@@ -375,7 +394,7 @@ return {
 							},
 						},
 					},
-					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact" },
+					filetypes = { "typescript", "javascript", "typescriptreact", "javascriptreact", "html" },
 				})
 			end, 100)
 		end,

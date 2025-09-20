@@ -29,6 +29,7 @@ return {
 				"sql", -- For SQL (since you use sqlls)
 				"css", -- For CSS (since you use cssls)
 				"scss",
+				"embedded_template", -- For EJS and other template languages
 			},
 			auto_install = true,
 			highlight = {
