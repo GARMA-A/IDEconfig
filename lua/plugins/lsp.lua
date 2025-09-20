@@ -297,6 +297,7 @@ return {
 								},
 							}
 						end
+						if server_name == "tailwindcss" or server_name == "tailwindcss-language-server" then
 							opts.settings = {
 								tailwindCSS = {
 									experimental = {
