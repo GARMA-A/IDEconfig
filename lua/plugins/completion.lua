@@ -29,7 +29,7 @@ return {
 			local i = ls.insert_node
 
 			-- Add the snippet for multiple filetypes (optional)
-			for _, ft in ipairs({ "javascript", "javascriptreact", "typescript", "typescriptreact" }) do
+			for _, ft in ipairs({ "javascript", "javascriptreact", "typescript", "typescriptreact", "html" }) do
 				ls.add_snippets(ft, {
 					s("cl", {
 						t("console.log("),
@@ -61,6 +61,32 @@ return {
 					t({ "", "<body>", "" }),
 					i(0),
 					t({ "", "</body>", "</html>" }),
+				}),
+				-- EJS-specific snippets
+				s("<%", {
+					t("<% "),
+					i(1),
+					t(" %>"),
+				}),
+				s("<%=", {
+					t("<%= "),
+					i(1),
+					t(" %>"),
+				}),
+				s("<%-", {
+					t("<%- "),
+					i(1),
+					t(" %>"),
+				}),
+				s("<%#", {
+					t("<%# "),
+					i(1),
+					t(" %>"),
+				}),
+				s("<%include", {
+					t("<%- include('"),
+					i(1, "partial"),
+					t("') %>"),
 				}),
 			})
 
