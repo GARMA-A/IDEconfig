@@ -34,7 +34,7 @@ return {
 				cpp = { "clang-format" }, -- Added clang-format for C++ files
 				python = { "black" }, -- Added black for Python files
 				sql = { "pg_format" },
-				prisma = { "prisma-language-server" },
+				-- Prisma formatting is handled by the language server automatically
 			},
 			formatters = {
 				pg_format = {
@@ -45,10 +45,7 @@ return {
 						"2",
 					},
 				},
-				prisma_language_server = {
-					-- Optional: Add args if needed
-					-- prepend_args = { "--format" },
-				},
+				-- Prisma formatting is handled by the language server
 			},
 		},
 	},
