@@ -1,0 +1,18 @@
+### Test API Endpoints
+@baseUrl = https://httpbin.org
+@token = test_token
+
+###
+# Simple GET request
+GET {{baseUrl}}/get
+Content-Type: application/json
+
+###
+# POST request with JSON body
+POST {{baseUrl}}/post
+Content-Type: application/json
+
+{
+  "name": "test",
+  "data": "sample"
+}
