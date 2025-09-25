@@ -17,6 +17,7 @@ return {
 			"hrsh7th/cmp-nvim-lsp",
 			"hrsh7th/cmp-path",
 			"hrsh7th/cmp-nvim-lsp-signature-help",
+			"hrsh7th/cmp-buffer",
 		},
 		config = function()
 			-- See `:help cmp`
@@ -64,6 +65,100 @@ return {
 				}),
 			})
 
+			-- HTTP/REST API documentation snippets
+			ls.add_snippets("http", {
+				-- GET request
+				s("get", {
+					t("GET "),
+					i(1, "https://api.example.com/endpoint"),
+					t({ "", "Content-Type: application/json", "", "" }),
+				}),
+				-- POST request
+				s("post", {
+					t("POST "),
+					i(1, "https://api.example.com/endpoint"),
+					t({ "", "Content-Type: application/json", "", "{", "  " }),
+					i(2, '"key": "value"'),
+					t({ "", "}" }),
+				}),
+				-- PUT request
+				s("put", {
+					t("PUT "),
+					i(1, "https://api.example.com/endpoint"),
+					t({ "", "Content-Type: application/json", "", "{", "  " }),
+					i(2, '"key": "value"'),
+					t({ "", "}" }),
+				}),
+				-- DELETE request
+				s("delete", {
+					t("DELETE "),
+					i(1, "https://api.example.com/endpoint"),
+					t({ "", "Content-Type: application/json", "", "" }),
+				}),
+				-- PATCH request
+				s("patch", {
+					t("PATCH "),
+					i(1, "https://api.example.com/endpoint"),
+					t({ "", "Content-Type: application/json", "", "{", "  " }),
+					i(2, '"key": "value"'),
+					t({ "", "}" }),
+				}),
+				-- Authorization header
+				s("auth", {
+					t("Authorization: Bearer "),
+					i(1, "your_token_here"),
+				}),
+				-- Basic auth
+				s("basic", {
+					t("Authorization: Basic "),
+					i(1, "base64_encoded_credentials"),
+				}),
+				-- API key header
+				s("apikey", {
+					t("X-API-Key: "),
+					i(1, "your_api_key_here"),
+				}),
+				-- Content-Type JSON
+				s("json", {
+					t("Content-Type: application/json"),
+				}),
+				-- Content-Type form data
+				s("form", {
+					t("Content-Type: application/x-www-form-urlencoded"),
+				}),
+				-- User-Agent header
+				s("ua", {
+					t("User-Agent: "),
+					i(1, "REST Client"),
+				}),
+				-- Variable definition
+				s("var", {
+					t("@"),
+					i(1, "variable_name"),
+					t(" = "),
+					i(2, "value"),
+				}),
+				-- Environment separator
+				s("env", {
+					t("###"),
+					t({ "", "# " }),
+					i(1, "Environment: Development"),
+					t({ "", "" }),
+				}),
+				-- Complete REST request template
+				s("req", {
+					t("### "),
+					i(1, "Request Description"),
+					t({ "", "" }),
+					i(2, "GET"),
+					t(" "),
+					i(3, "https://api.example.com/endpoint"),
+					t({ "", "Content-Type: application/json", "Authorization: Bearer " }),
+					i(4, "{{token}}"),
+					t({ "", "", "" }),
+				}),
+			})
+
 			cmp.setup({
 				snippet = {
 					expand = function(args)
@@ -108,6 +203,15 @@ return {
 					{ name = "nvim_lsp_signature_help" },
 					{ name = "emoji" },
 				},
+			})
+
+			-- Enhanced completion for HTTP files
+			cmp.setup.filetype("http", {
+				sources = cmp.config.sources({
+					{ name = "luasnip", priority = 1000 },
+					{ name = "buffer", priority = 800 },
+					{ name = "path", priority = 600 },
+				}),
 			})
 		end,
 	},

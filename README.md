@@ -25,8 +25,21 @@ This configuration has been organized into a modular structure for better mainta
         ├── oil.lua            # File manager
         ├── copilot.lua        # AI assistance
         ├── git.lua            # Git integration
+        ├── rest.lua           # REST API documentation & testing
         └── ui.lua             # Themes & interface
 ```
+
+## Features
+
+- **Complete LSP setup** with Mason for easy language server management
+- **Smart autocompletion** with nvim-cmp and custom snippets
+- **Git integration** with fugitive and gitsigns
+- **File management** with Oil.nvim
+- **AI assistance** with GitHub Copilot
+- **REST API documentation** with .rest file support and autocompletion
+- **Modern UI** with custom themes and status line
+- **Fuzzy finding** with Telescope
+- **Syntax highlighting** with Treesitter
 
 ## Benefits
 

@@ -45,3 +45,10 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "prisma"
 	end,
 })
+
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = {"*.rest", "*.http"},
+	callback = function()
+		vim.bo.filetype = "http"
+	end,
+})
