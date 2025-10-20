@@ -30,6 +30,7 @@ return {
 				"css", -- For CSS (since you use cssls)
 				"scss",
 				"prisma", -- For Prisma schema files
+				"embedded_template", -- For EJS files
 			},
 			auto_install = true,
 			highlight = {
