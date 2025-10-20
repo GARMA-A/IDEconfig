@@ -34,6 +34,7 @@ return {
 				cpp = { "clang-format" }, -- Added clang-format for C++ files
 				python = { "black" }, -- Added black for Python files
 				sql = { "pg_format" },
+				zig = { "zigfmt" }, -- Zig built-in formatter
 				-- Prisma formatting is handled by the language server automatically
 			},
 			formatters = {
@@ -44,6 +45,11 @@ return {
 						"--spaces",
 						"2",
 					},
+				},
+				zigfmt = {
+					command = "zig",
+					args = { "fmt", "--stdin" },
+					stdin = true,
 				},
 				-- Prisma formatting is handled by the language server
 			},

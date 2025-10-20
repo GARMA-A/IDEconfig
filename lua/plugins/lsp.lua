@@ -242,6 +242,30 @@ return {
 						SdkIncludePrereleases = true,
 					},
 				},
+				zls = {
+					cmd = { "zls" },
+					filetypes = { "zig", "zir" },
+					root_dir = function(fname)
+						return require("lspconfig.util").root_pattern("zls.json", "build.zig", ".git")(fname)
+							or vim.fn.getcwd()
+					end,
+					settings = {
+						zls = {
+							enable_snippets = true,
+							enable_ast_check_diagnostics = true,
+							enable_autofix = true,
+							enable_import_embedfile_argument_completions = true,
+							enable_semantic_tokens = true,
+							enable_inlay_hints = true,
+							inlay_hints_show_builtin = true,
+							inlay_hints_exclude_single_argument = true,
+							inlay_hints_hide_redundant_param_names = false,
+							inlay_hints_hide_redundant_param_names_last_token = false,
+							warn_style = true,
+							highlight_global_var_declarations = true,
+						},
+					},
+				},
 			}
 
 			local ensure_installed = vim.tbl_keys(servers or {})
@@ -269,6 +293,7 @@ return {
 					"prisma-language-server",
 					"angular-language-server",
 					"omnisharp", -- Ensures OmniSharp is installed
+					"zls", -- Zig Language Server
 					--"dotnet-format", -- Optional: C# formatter
 				},
 			})
