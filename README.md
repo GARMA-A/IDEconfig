@@ -16,6 +16,7 @@ This configuration has been organized into a modular structure for better mainta
     │   └── lazy.lua           # Lazy.nvim plugin manager setup
     └── plugins/               # Plugin configurations
         ├── go.lua             # Go development tools
+        ├── zig.lua            # Zig development tools
         ├── lsp.lua            # Language Server Protocol setup
         ├── misc.lua           # Utility plugins (colorizer, etc.)
         ├── treesitter.lua     # Syntax highlighting
@@ -35,6 +36,22 @@ This configuration has been organized into a modular structure for better mainta
 - **Organized**: Clear separation between core config and plugins
 - **Readable**: Much easier to navigate and understand
 - **Same functionality**: All original features preserved exactly
+
+## Supported Languages
+
+This configuration includes full development support for:
+
+- **Go**: LSP (gopls), formatting (gofumpt), debugging, testing
+- **Zig**: LSP (zls), formatting (zig fmt), syntax highlighting, code snippets
+- **TypeScript/JavaScript**: LSP (ts_ls), ESLint, Prettier formatting
+- **HTML/CSS**: LSP, Tailwind CSS support, formatting
+- **Python**: LSP, Black formatting
+- **C/C++**: LSP, clang-format
+- **C#**: LSP (OmniSharp), .NET support
+- **SQL**: LSP (sqlls), pg_format
+- **YAML/Docker**: LSP support
+- **Prisma**: LSP for database schema
+- **Lua**: LSP (lazydev), stylua formatting
 
 ## How it works
 
