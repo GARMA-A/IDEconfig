@@ -32,6 +32,14 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 		vim.cmd("GoFmt")
 	end,
 })
+
+-- Format Zig files on save
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.zig",
+	callback = function()
+		require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
+	end,
+})
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 	pattern = { "Dockerfile", "*.dockerfile" },
 	callback = function()
