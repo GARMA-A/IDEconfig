@@ -47,6 +47,17 @@ This configuration has been organized into a modular structure for better mainta
 
 2. Lazy.nvim automatically loads all files in the `lua/plugins/` directory
 
+## Supported Languages & File Types
+
+This configuration includes out-of-the-box support for:
+
+- **Web Development**: JavaScript, TypeScript, HTML, CSS, SCSS, EJS templates
+- **Backend**: Go, C#, Python, SQL
+- **DevOps**: Docker, YAML
+- **Databases**: Prisma schema files
+- **Systems**: C, C++, Bash
+- **Config**: Lua, Vim script, Markdown
+
 ## Customization
 
 - To disable a plugin: Remove or rename the corresponding file in `lua/plugins/`
