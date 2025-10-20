@@ -45,3 +45,11 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "prisma"
 	end,
 })
+
+-- Make Neovim treat .ejs as HTML
+vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
+	pattern = "*.ejs",
+	callback = function()
+		vim.bo.filetype = "html"
+	end,
+})

@@ -1,7 +1,11 @@
 -- Simple plugins without complex configuration
 return {
 	"tpope/vim-sleuth", -- Detect tabstop and shiftwidth automatically
-	
+	{
+		"othree/html5.vim",
+		ft = { "html", "ejs" },
+	},
+
 	{
 		"norcalli/nvim-colorizer.lua",
 		event = "VeryLazy", -- lazy-load on BufReadPre or VeryLazy
@@ -9,22 +13,22 @@ return {
 			require("colorizer").setup()
 		end,
 	},
-	
+
 	{
 		"andymass/vim-matchup",
 		event = "VeryLazy",
 	},
-	
+
 	{
 		"ekalinin/Dockerfile.vim",
 		ft = "dockerfile",
 	},
-	
+
 	{
 		"stephpy/vim-yaml",
 		ft = "yaml",
 	},
-	
+
 	{
 		"iamcco/markdown-preview.nvim",
 		build = "cd app && npm install",
@@ -33,10 +37,10 @@ return {
 			vim.g.mkdp_auto_start = 0
 		end,
 	},
-	
+
 	{
 		"mattn/emmet-vim",
-		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact" },
+		ft = { "html", "css", "scss", "javascriptreact", "typescriptreact", "ejs" },
 		init = function()
 			-- Optional: Customize for Next.js JSX/TSX (e.g., className instead of class)
 			vim.g.user_emmet_settings = {
@@ -55,19 +59,19 @@ return {
 			}
 		end,
 	},
-	
+
 	{
 		"windwp/nvim-autopairs",
 		config = function()
 			require("nvim-autopairs").setup({})
 		end,
 	},
-	
+
 	{
 		"mbbill/undotree",
 		keys = { { "<leader>u", "<cmd>UndotreeToggle<CR>", desc = "Toggle Undo Tree" } },
 	},
-	
+
 	{
 		"saecki/crates.nvim",
 		ft = { "toml" },
@@ -84,7 +88,7 @@ return {
 			})
 		end,
 	},
-	
+
 	{
 		"windwp/nvim-ts-autotag",
 		ft = { "html", "javascript", "typescript", "javascriptreact", "typescriptreact" },
@@ -92,7 +96,7 @@ return {
 			require("nvim-ts-autotag").setup()
 		end,
 	},
-	
+
 	{
 		"elentok/format-on-save.nvim",
 		config = function()

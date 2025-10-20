@@ -31,6 +31,10 @@ vim.keymap.set("n", "}", "<C-d>", opts)
 
 vim.keymap.set("n", "{", "<C-u>", opts)
 
+vim.keymap.set("n", "<C-d>", "}", { noremap = true, silent = true })
+
+vim.keymap.set("n", "<C-e>", "{", { noremap = true, silent = true })
+
 vim.keymap.set("n", "<C-x>", "<Plug>(matchup-%)", {})
 vim.keymap.set("v", "<C-x>", "<Plug>(matchup-%)", {})
 
@@ -282,4 +286,3 @@ end
 
 -- map Alt-- to toggle
 vim.api.nvim_set_keymap("n", "<A-->", [[:lua ToggleBottomTerminal()<CR>]], { noremap = true, silent = true })
-
