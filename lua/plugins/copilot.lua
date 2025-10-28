@@ -8,8 +8,7 @@ return {
 		config = function()
 			require("CopilotChat").setup({
 				opts = {
-					-- Use this to override the default model for all providers
-					-- Updated to the new Gemini 2.5 Flash
+
 					default_model = "gemini/gemini-2.5-flash",
 
 					-- Define the Gemini provider

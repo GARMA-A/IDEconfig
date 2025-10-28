@@ -252,22 +252,11 @@ return {
 					settings = {
 						zls = {
 							enable_snippets = true,
-<<<<<<< HEAD
-							enable_ast_check_diagnostics = true,
 							enable_autofix = true,
-							enable_import_embedfile_argument_completions = true,
-=======
-							enable_autofix = true,
->>>>>>> af192ae (add zig support)
 							enable_semantic_tokens = true,
 							enable_inlay_hints = true,
 							inlay_hints_show_builtin = true,
 							inlay_hints_exclude_single_argument = true,
-<<<<<<< HEAD
-							inlay_hints_hide_redundant_param_names = false,
-							inlay_hints_hide_redundant_param_names_last_token = false,
-=======
->>>>>>> af192ae (add zig support)
 							warn_style = true,
 							highlight_global_var_declarations = true,
 						},
@@ -300,11 +289,7 @@ return {
 					"prisma-language-server",
 					"angular-language-server",
 					"omnisharp", -- Ensures OmniSharp is installed
-<<<<<<< HEAD
-					"zls", -- Zig Language Server
-=======
 					"zls",
->>>>>>> af192ae (add zig support)
 					--"dotnet-format", -- Optional: C# formatter
 				},
 			})
