@@ -6,9 +6,42 @@ return {
 			{ "nvim-lua/plenary.nvim" },
 		},
 		config = function()
-			require("CopilotChat").setup({})
+			require("CopilotChat").setup({
+				opts = {
+					-- Use this to override the default model for all providers
+					-- Updated to the new Gemini 2.5 Flash
+					default_model = "gemini/gemini-2.5-flash",
+
+					-- Define the Gemini provider
+					providers = {
+						gemini = {
+							-- This is the OpenAI-compatible endpoint for Gemini (still correct!)
+							url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
+							-- This function reads your API key from the environment variable (still correct!)
+							get_headers = function()
+								local api_key = os.getenv("GEMINI_API_KEY")
+								if not api_key then
+									vim.notify("GEMINI_API_KEY environment variable not set", vim.log.levels.ERROR)
+									return {}
+								end
+								return {
+									["Authorization"] = "Bearer " .. api_key,
+									["Content-Type"] = "application/json",
+								}
+							end,
+							models = {
+								"gemini-2.5-pro", -- The new high-capability model
+								"gemini-2.5-flash", -- The new fast model
+								"gemini-1.5-pro-latest", -- Still available
+								"gemini-1.5-flash-latest", -- Still available
+							},
+						},
+					},
+				},
+			})
 		end,
 	},
+
 	{
 		"github/copilot.vim",
 		dependencies = {},
