@@ -51,6 +51,63 @@ return {
 					t({ "", "}" }),
 				}),
 			})
+
+			ls.add_snippets("zig", {
+				s("main", {
+					t({ 'const std = @import("std");', "", "pub fn main() !void {" }),
+					t({ "", "    " }),
+					i(1),
+					t({ "", "}" }),
+				}),
+				s("print", {
+					t('std.debug.print("'),
+					i(1),
+					t('\\n", .{'),
+					i(2),
+					t("})"),
+				}),
+				s("test", {
+					t('test "'),
+					i(1, "test name"),
+					t({ '" {', "    " }),
+					i(2),
+					t({ "", "}" }),
+				}),
+				s("fn", {
+					t("fn "),
+					i(1, "functionName"),
+					t("("),
+					i(2),
+					t(") "),
+					i(3, "void"),
+					t({ " {", "    " }),
+					i(4),
+					t({ "", "}" }),
+				}),
+				s("if", {
+					t("if ("),
+					i(1, "condition"),
+					t({ ") {", "    " }),
+					i(2),
+					t({ "", "}" }),
+				}),
+				s("for", {
+					t("for ("),
+					i(1, "items"),
+					t(") |"),
+					i(2, "item"),
+					t({ "| {", "    " }),
+					i(3),
+					t({ "", "}" }),
+				}),
+				s("err", {
+					t("if ("),
+					i(1, "result"),
+					t({ ") |err| {", "    " }),
+					i(2),
+					t({ "", "}" }),
+				}),
+			})
 			ls.add_snippets("html", {
 				s("!", {
 					t({ "<!DOCTYPE html>", '<html lang="en">', "<head>", '  <meta charset="UTF-8">' }),
@@ -170,3 +227,4 @@ return {
 		end,
 	},
 }
+

@@ -61,3 +61,9 @@ vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
 		vim.bo.filetype = "html"
 	end,
 })
+vim.api.nvim_create_autocmd("BufWritePre", {
+	pattern = "*.zig",
+	callback = function()
+		require("conform").format({ bufnr = vim.api.nvim_get_current_buf() })
+	end,
+})
