@@ -52,7 +52,9 @@ set signcolumn=yes
 " Faster updates (default is 4000 ms)
 set updatetime=250
 
-" Faster timeout for key combinations
+" Faster timeout for key combinations (default is 1000ms)
+" Note: 50ms matches the Neovim config but may be too fast for some users
+" Increase to 300-500ms if you have issues with leader key combinations
 set timeoutlen=50
 
 " Split windows to the right and below
@@ -123,7 +125,9 @@ Plug 'junegunn/fzf.vim'                    " Fuzzy finder for files, buffers, et
 
 " --- File Navigation ---
 Plug 'preservim/nerdtree'                  " File explorer
-Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
+" Note: Harpoon (file marking/navigation) is available but requires additional setup
+" Uncomment below to enable Harpoon functionality:
+" Plug 'ThePrimeagen/harpoon', { 'branch': 'harpoon2' }
 
 " --- Git Integration ---
 Plug 'tpope/vim-fugitive'                  " Git commands
@@ -161,8 +165,11 @@ Plug 'ziglang/zig.vim', { 'for': 'zig' }
 " --- Markdown ---
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && npm install', 'for': 'markdown' }
 
-" --- AI Assistance (if using Copilot) ---
-" Plug 'github/copilot.vim'                " GitHub Copilot (requires setup)
+" --- AI Assistance ---
+" GitHub Copilot is available but disabled by default
+" To enable, uncomment the line below and run :PlugInstall
+" Then authenticate with: :Copilot setup
+" Plug 'github/copilot.vim'
 
 call plug#end()
 
