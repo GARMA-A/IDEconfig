@@ -1,0 +1,18 @@
+# Vim runtime files
+.vim/
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Vim plug directory (for local testing)
+plugged/
+
+# Neovim lazy.nvim
+lazy-lock.json
+
+# Undo files
+*.un~
+
+# Environment
+.env
