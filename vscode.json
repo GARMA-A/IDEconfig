@@ -267,6 +267,329 @@
     }
   },
   {
+    "key": "e",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["e"],
+      "after": ["w"]
+    }
+  },
+  {
+    "key": "e",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["e"],
+      "after": ["w"]
+    }
+  },
+  {
+    "key": "m",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["m"],
+      "after": ["q"]
+    }
+  },
+  {
+    "key": "M",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["M"],
+      "after": ["q"]
+    }
+  },
+  {
+    "key": "+",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["+"],
+      "after": ["="]
+    }
+  },
+  {
+    "key": "+",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["+"],
+      "after": ["="]
+    }
+  },
+  {
+    "key": "}",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["}"],
+      "after": ["<C-d>"]
+    }
+  },
+  {
+    "key": "{",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["{"],
+      "after": ["<C-u>"]
+    }
+  },
+  {
+    "key": "ctrl+d",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-d>"],
+      "after": ["}"]
+    }
+  },
+  {
+    "key": "ctrl+e",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-e>"],
+      "after": ["{"]
+    }
+  },
+  {
+    "key": "ctrl+x",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-x>"],
+      "after": ["%"]
+    }
+  },
+  {
+    "key": "ctrl+x",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["<C-x>"],
+      "after": ["%"]
+    }
+  },
+  {
+    "key": "alt+left",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-left>"],
+      "after": ["<C-w>", "h"]
+    }
+  },
+  {
+    "key": "alt+right",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-right>"],
+      "after": ["<C-w>", "l"]
+    }
+  },
+  {
+    "key": "alt+down",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-down>"],
+      "after": ["<C-w>", "j"]
+    }
+  },
+  {
+    "key": "alt+up",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-up>"],
+      "after": ["<C-w>", "k"]
+    }
+  },
+  {
+    "key": "b",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["b"],
+      "after": ["m"]
+    }
+  },
+  {
+    "key": "shift+z",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["Z"],
+      "after": ["$"]
+    }
+  },
+  {
+    "key": "shift+z",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["Z"],
+      "after": ["$"]
+    }
+  },
+  {
+    "key": "shift+z shift+z",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["Z", "Z"],
+      "after": []
+    }
+  },
+  {
+    "key": "alt+j",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["<A-j>"],
+      "commands": [
+        {
+          "command": "editor.action.moveLinesDownAction"
+        }
+      ]
+    }
+  },
+  {
+    "key": "alt+k",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["<A-k>"],
+      "commands": [
+        {
+          "command": "editor.action.moveLinesUpAction"
+        }
+      ]
+    }
+  },
+  {
+    "key": "shift+,",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<"],
+      "commands": [
+        {
+          "command": "workbench.action.previousEditor"
+        }
+      ]
+    }
+  },
+  {
+    "key": "shift+.",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": [">"],
+      "commands": [
+        {
+          "command": "workbench.action.nextEditor"
+        }
+      ]
+    }
+  },
+  {
+    "key": "alt+=",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-=>"],
+      "commands": [
+        {
+          "command": "workbench.action.closeActiveEditor"
+        }
+      ]
+    }
+  },
+  {
+    "key": "alt+j",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-j>"],
+      "commands": [
+        {
+          "command": "editor.action.marker.next"
+        }
+      ]
+    }
+  },
+  {
+    "key": "alt+k",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<A-k>"],
+      "commands": [
+        {
+          "command": "editor.action.marker.prev"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ctrl+]",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-]>"],
+      "commands": [
+        {
+          "command": "workbench.action.openEditorAtIndex1"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ctrl+[",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-[>"],
+      "commands": [
+        {
+          "command": "workbench.action.openEditorAtIndex2"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ctrl+p",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-p>"],
+      "commands": [
+        {
+          "command": "workbench.action.openEditorAtIndex3"
+        }
+      ]
+    }
+  },
+  {
+    "key": "ctrl+o",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<C-o>"],
+      "commands": [
+        {
+          "command": "workbench.action.openEditorAtIndex4"
+        }
+      ]
+    }
+  },
+  {
     "key": "alt+' alt+[",
     "command": "workbench.action.terminal.requestCompletions",
     "when": "config.terminal.integrated.suggest.enabled && terminalFocus && terminalProcessSupported && !terminalSuggestWidgetVisible"
