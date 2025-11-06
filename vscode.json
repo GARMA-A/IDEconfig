@@ -590,6 +590,91 @@
     }
   },
   {
+    "key": "space q",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", "q"],
+      "commands": [
+        {
+          "command": "workbench.actions.view.problems"
+        }
+      ]
+    }
+  },
+  {
+    "key": "space shift+.",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", ">"],
+      "after": [">", ">"]
+    }
+  },
+  {
+    "key": "space shift+.",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["<leader>", ">"],
+      "after": [">", "g", "v"]
+    }
+  },
+  {
+    "key": "space shift+,",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", "<"],
+      "after": ["<", "<"]
+    }
+  },
+  {
+    "key": "space shift+,",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Visual'",
+    "args": {
+      "before": ["<leader>", "<"],
+      "after": ["<", "g", "v"]
+    }
+  },
+  {
+    "key": "space ]",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", "]"],
+      "after": ["<C-]>"]
+    }
+  },
+  {
+    "key": "space [",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", "["],
+      "after": ["<C-[>"]
+    }
+  },
+  {
+    "key": "space p",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", "p"],
+      "after": ["<C-p>"]
+    }
+  },
+  {
+    "key": "space o",
+    "command": "vim.remap",
+    "when": "editorTextFocus && vim.mode == 'Normal'",
+    "args": {
+      "before": ["<leader>", "o"],
+      "after": ["<C-o>"]
+    }
+  },
+  {
     "key": "alt+' alt+[",
     "command": "workbench.action.terminal.requestCompletions",
     "when": "config.terminal.integrated.suggest.enabled && terminalFocus && terminalProcessSupported && !terminalSuggestWidgetVisible"
