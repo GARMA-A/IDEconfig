@@ -2,6 +2,84 @@
 
 This configuration has been organized into a modular structure for better maintainability and organization.
 
+## VSCode Integration
+
+The `vscode.json` file contains VSCode keybindings that mirror the custom Neovim keymaps defined in `lua/config/keymaps.lua`. This allows the VSCode Vim extension to behave identically to the Neovim setup.
+
+### How to use with VSCode
+
+1. Install the [VSCode Vim extension](https://marketplace.visualstudio.com/items?itemName=vscodevim.vim)
+2. Copy the contents of `vscode.json` to your VSCode `keybindings.json` file:
+   - On Windows/Linux: `File > Preferences > Keyboard Shortcuts` then click the "Open Keyboard Shortcuts (JSON)" icon
+   - On macOS: `Code > Preferences > Keyboard Shortcuts` then click the "Open Keyboard Shortcuts (JSON)" icon
+3. Save and reload VSCode
+
+### Custom Keymaps Reference
+
+The following custom keymaps from Neovim are now available in VSCode:
+
+#### Basic Navigation & Editing
+- `q` → `i` - Enter insert mode (remapped from `i`)
+- `Q` → `I` - Insert at beginning of line (remapped from `I`)
+- `m` → `q` - Start recording macro (remapped from `q`)
+- `M` → `q` - Start recording macro (same as `m`)
+- `w` → `b` - Move backward by word (remapped from `b`)
+- `e` → `w` - Move forward by word (remapped from `w`)
+- `b` → `m` - Set mark (remapped from `m`)
+
+#### Indentation & Movement
+- `+` → `=` - Auto-indent (remapped from `=`)
+- `=` → `+` - Move down (remapped from `+`)
+- `}` → `Ctrl+d` - Half page down (remapped from `Ctrl+d`)
+- `{` → `Ctrl+u` - Half page up (remapped from `Ctrl+u`)
+- `Ctrl+d` → `}` - Next paragraph (remapped from `}`)
+- `Ctrl+e` → `{` - Previous paragraph (remapped from `{`)
+
+#### Matching & End of Line
+- `Ctrl+x` → `%` - Jump to matching bracket
+- `Z` → `$` - Jump to end of line
+- `ZZ` → Disabled (no save and quit in VSCode)
+
+#### Window Navigation
+- `Alt+Left` - Move to left window
+- `Alt+Right` - Move to right window
+- `Alt+Up` - Move to upper window
+- `Alt+Down` - Move to lower window
+
+#### Line Movement (Visual Mode)
+- `Alt+j` - Move selected lines down
+- `Alt+k` - Move selected lines up
+
+#### Editor Navigation
+- `<` - Previous editor tab
+- `>` - Next editor tab
+- `Ctrl+]` - Go to editor 1
+- `Ctrl+[` - Go to editor 2
+- `Ctrl+p` - Go to editor 3
+- `Ctrl+o` - Go to editor 4
+
+#### Problems/Diagnostics (Normal Mode)
+- `Alt+j` - Next error/warning in location list
+- `Alt+k` - Previous error/warning in location list
+- `Alt+=` - Close current editor/buffer
+
+#### Leader Key Mappings (Space as leader)
+- `<leader>q` - Open problems/diagnostics panel
+- `<leader>>` - Indent right (normal mode)
+- `<leader>>` - Indent right and reselect (visual mode)
+- `<leader><` - Indent left (normal mode)
+- `<leader><` - Indent left and reselect (visual mode)
+- `<leader>]` - Same as `Ctrl+]`
+- `<leader>[` - Same as `Ctrl+[`
+- `<leader>p` - Same as `Ctrl+p`
+- `<leader>o` - Same as `Ctrl+o`
+
+#### Escape Key Alternative
+- `Alt+c` - Escape to normal mode (works in normal, insert, and visual modes)
+
+### Note
+Some Neovim keymaps related to plugins (Harpoon, Copilot Chat, Telescope, etc.) are not included in the VSCode configuration as they depend on Neovim-specific plugins. Only core vim keymaps and general editor navigation are included.
+
 ## Structure
 
 ```
