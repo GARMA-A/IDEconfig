@@ -6,25 +6,29 @@ local opts = { noremap = true, silent = true }
 vim.keymap.set("n", "<A-c>", "<cmd>nohlsearch<CR>")
 vim.keymap.set("i", "<A-c>", "<Esc>", opts)
 vim.keymap.set("v", "<A-c>", "<Esc>", opts)
-vim.keymap.set("t", "<A-c>", "<C-\\><C-n>", opts) -- Exit terminal mode
+vim.keymap.set("t", "<A-c>", "<C-\\><C-n>", opts)
 
 -- Recording macros and behavior changes
-vim.keymap.set("n", "m", "q", opts) -- Start recording macro with "m"
+vim.keymap.set("n", "m", "q", opts)
 vim.keymap.set("n", "M", "q", opts)
-vim.keymap.set("n", "Q", "I", opts) -- Make "Q" behave like "I"
-vim.keymap.set("n", "q", "i", opts) -- Make "q" behave like "i"
+vim.keymap.set("n", "Q", "I", opts)
+vim.keymap.set("n", "q", "i", opts)
 
 -- Indentation and moving down
-vim.keymap.set("n", "+", "=", opts) -- Use + for indentation
-vim.keymap.set("n", "=", "+", opts) -- Use = for moving down
-vim.keymap.set("v", "+", "=", opts) -- Use + for indentation
-vim.keymap.set("v", "=", "+", opts) -- Use = for moving down
+vim.keymap.set("n", "+", "=", opts)
+vim.keymap.set("n", "=", "+", opts)
+vim.keymap.set("v", "+", "=", opts)
+vim.keymap.set("v", "=", "+", opts)
 
--- Word navigation
-vim.keymap.set("n", "w", "b", opts) -- Move back with "w"
+vim.keymap.set("n", "w", "b", opts)
 vim.keymap.set("v", "w", "b", opts)
+vim.keymap.set("n", "W", "B", opts)
+vim.keymap.set("v", "W", "B", opts)
 
-vim.keymap.set("n", "e", "w", opts) -- Move forward with "e"
+vim.keymap.set("n", "E", "W", opts)
+vim.keymap.set("v", "E", "W", opts)
+
+vim.keymap.set("n", "e", "w", opts)
 vim.keymap.set("v", "e", "w", opts)
 
 vim.keymap.set("n", "}", "<C-d>", opts)
