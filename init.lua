@@ -6,7 +6,6 @@ require("config.options")
 
 -- Load keymaps
 require("config.keymaps")
-
 -- Load autocommands
 require("config.autocmds")
 
@@ -31,7 +30,8 @@ end
 -- Track terminals and previous file buffer
 local harpoon_term_bufs = {} -- term_num -> bufid
 local harpoon_prev_bufs = {} -- term_num -> file-bufid
-local last_file_buf = nil -- last *non-terminal* buffer
+local harpoon_term_initialized = {} -- term_num -> boolean (whether we've sent cd + cls already)
+local last_file_buf = nil
 
 local function is_harpoon_terminal_buf(buf)
 	for _, tbuf in pairs(harpoon_term_bufs) do
@@ -77,11 +77,16 @@ local function toggle_harpoon_terminal(term_num)
 	harpoon_term_bufs[term_num] = vim.api.nvim_get_current_buf()
 
 	-- Set working directory inside terminal (optional)
-	local cwd = get_current_working_directory()
-	if cwd ~= "" and vim.fn.isdirectory(cwd) == 1 then
-		local escaped_cwd = vim.fn.fnameescape(cwd)
-		term.sendCommand(term_num, "cd " .. escaped_cwd .. " && cls\n")
+	if not harpoon_term_initialized[term_num] then
+		local cwd = get_current_working_directory()
+		if cwd ~= "" and vim.fn.isdirectory(cwd) == 1 then
+			local escaped_cwd = vim.fn.fnameescape(cwd)
+			-- Send cd + cls only once
+			term.sendCommand(term_num, "cd " .. escaped_cwd .. " && cls\n")
+		end
+		harpoon_term_initialized[term_num] = true
 	end
+	-- After first init, we don't send any command -> terminal output is preserved
 end
 
 -- Keymaps
