@@ -380,16 +380,35 @@ return {
 				},
 			})
 			vim.defer_fn(function()
+				-- Get the global npm prefix to find installed plugins
+				local npm_prefix = vim.fn.trim(vim.fn.system("npm config get prefix 2>/dev/null"))
+				if npm_prefix == "" then
+					npm_prefix = "/usr/local" -- Fallback
+				end
+
+				local plugin_path = npm_prefix .. "/lib/node_modules/@styled/typescript-styled-plugin"
+
 				require("lspconfig").ts_ls.setup({
 					capabilities = capabilities,
 					single_file_support = true,
 					on_attach = function(client, bufnr)
 						print("ts_ls attached to buffer " .. bufnr)
 					end,
+					init_options = {
+						plugins = {
+							{
+								name = "@styled/typescript-styled-plugin",
+								location = plugin_path,
+							},
+						},
+					},
 					settings = {
 						typescript = {
 							preferences = {
 								importModuleSpecifierPreference = "project-relative",
+							},
+							tsserver = {
+								pluginPaths = { npm_prefix .. "/lib/node_modules" },
 							},
 						},
 						javascript = {
