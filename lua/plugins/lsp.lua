@@ -382,11 +382,26 @@ return {
 			vim.defer_fn(function()
 				-- Get the global npm prefix to find installed plugins
 				local npm_prefix = vim.fn.trim(vim.fn.system("npm config get prefix 2>/dev/null"))
-				if npm_prefix == "" then
-					npm_prefix = "/usr/local" -- Fallback
+				local is_windows = vim.fn.has("win32") == 1 or vim.fn.has("win64") == 1
+
+				-- Determine the correct node_modules path based on platform
+				local plugin_path
+				if is_windows then
+					-- Windows uses npm_prefix/node_modules
+					if npm_prefix == "" then
+						npm_prefix = vim.fn.expand("$APPDATA/npm")
+					end
+					plugin_path = npm_prefix .. "/node_modules/@styled/typescript-styled-plugin"
+				else
+					-- Unix-like systems use npm_prefix/lib/node_modules
+					if npm_prefix == "" then
+						npm_prefix = "/usr/local"
+					end
+					plugin_path = npm_prefix .. "/lib/node_modules/@styled/typescript-styled-plugin"
 				end
 
-				local plugin_path = npm_prefix .. "/lib/node_modules/@styled/typescript-styled-plugin"
+				local plugin_paths_dir = is_windows and (npm_prefix .. "/node_modules")
+					or (npm_prefix .. "/lib/node_modules")
 
 				require("lspconfig").ts_ls.setup({
 					capabilities = capabilities,
@@ -408,7 +423,7 @@ return {
 								importModuleSpecifierPreference = "project-relative",
 							},
 							tsserver = {
-								pluginPaths = { npm_prefix .. "/lib/node_modules" },
+								pluginPaths = { plugin_paths_dir },
 							},
 						},
 						javascript = {
