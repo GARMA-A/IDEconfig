@@ -27,6 +27,6 @@ end
 -- Run async to not block startup
 vim.defer_fn(function()
 	ensure_styled_plugin_installed()
-end, 2000)
+end, 600)
 
 return {}
