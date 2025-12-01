@@ -1,22 +1,20 @@
 return {
+	-- 1. KEEP THIS: Your Chat setup (No changes needed here)
 	{
 		"CopilotC-Nvim/CopilotChat.nvim",
-		branch = "main", -- 🔄 changed from 'canary' to 'main'
+		branch = "main",
 		dependencies = {
 			{ "nvim-lua/plenary.nvim" },
+			{ "zbirenbaum/copilot.lua" }, -- Add this as a dependency
 		},
 		config = function()
 			require("CopilotChat").setup({
 				opts = {
-
 					default_model = "gemini/gemini-2.5-flash",
-
-					-- Define the Gemini provider
+					-- ... (Your existing Gemini config remains the same) ...
 					providers = {
 						gemini = {
-							-- This is the OpenAI-compatible endpoint for Gemini (still correct!)
 							url = "https://generativelanguage.googleapis.com/v1beta/openai/chat/completions",
-							-- This function reads your API key from the environment variable (still correct!)
 							get_headers = function()
 								local api_key = os.getenv("GEMINI_API_KEY")
 								if not api_key then
@@ -29,10 +27,10 @@ return {
 								}
 							end,
 							models = {
-								"gemini-2.5-pro", -- The new high-capability model
-								"gemini-2.5-flash", -- The new fast model
-								"gemini-1.5-pro-latest", -- Still available
-								"gemini-1.5-flash-latest", -- Still available
+								"gemini-2.5-pro",
+								"gemini-2.5-flash",
+								"gemini-1.5-pro-latest",
+								"gemini-1.5-flash-latest",
 							},
 						},
 					},
@@ -41,13 +39,22 @@ return {
 		end,
 	},
 
+	-- 2. REPLACE THIS: Remove 'github/copilot.vim' and use this instead
 	{
-		"github/copilot.vim",
-		dependencies = {},
-		event = "VimEnter",
+		"zbirenbaum/copilot.lua",
+		cmd = "Copilot",
+		event = "InsertEnter", -- Only load when you actually start typing
 		config = function()
-			vim.g.copilot_no_tab_map = false
-			vim.g.copilot_workspace_folders = { vim.fn.getcwd() }
+			require("copilot").setup({
+				suggestion = {
+					enabled = true,
+					auto_trigger = true, -- Auto suggest like the original
+					keymap = {
+						accept = "<Tab>", -- Ensure Tab accepts the suggestion
+					},
+				},
+				panel = { enabled = false },
+			})
 		end,
 	},
 }
